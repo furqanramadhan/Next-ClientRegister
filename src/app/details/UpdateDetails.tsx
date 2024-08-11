@@ -1,53 +1,54 @@
 "use client";
+
 import { useState, SyntheticEvent } from "react";
 import { useRouter } from "next/navigation";
 
-export default function AddDetails() {
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
+type Detail = {
+  id: number;
+  title: string;
+  price: number;
+};
+
+export default function UpdateDetails(detail: Detail) {
+  const [title, setTitle] = useState(detail.title);
+  const [price, setPrice] = useState(detail.price.toString()); // Initialize as string
   const [modal, setModal] = useState(false);
   const [isMutating, setIsMutating] = useState(false);
 
   const router = useRouter();
 
-  async function handleSubmit(e: SyntheticEvent) {
+  async function handleUpdate(e: SyntheticEvent) {
     e.preventDefault();
     setIsMutating(true);
 
     try {
-      const response = await fetch("http://localhost:5000/details", {
-        method: "POST",
+      const res = await fetch(`http://localhost:5000/details/${detail.id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          title: title,
-          price: price,
+          title,
+          price: Number(price), // Convert to number before sending
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to add detail");
+      if (!res.ok) {
+        throw new Error("Failed to update detail");
       }
 
-      // Clear input fields
-      setTitle("");
-      setPrice("");
-
-      // Refresh the data
       router.refresh();
-
-      // Close the modal
       setModal(false);
     } catch (error) {
-      console.error("Error adding detail:", error);
+      console.error("Error updating detail:", error);
     } finally {
-      setIsMutating(false); // Ensure state is reset even if there is an error
+      setIsMutating(false);
     }
   }
 
   // Determine if the form is valid
-  const isFormValid = title.trim() !== "" && price.trim() !== "";
+  const isFormValid =
+    title.trim() !== "" && !isNaN(Number(price)) && Number(price) > 0;
 
   function handleChange() {
     setModal(!modal);
@@ -56,17 +57,17 @@ export default function AddDetails() {
   return (
     <div>
       <button
-        className="btn bg-green px-2 py-2 text-sm text-white hover:bg-yellow"
+        className="btn bg-green text-white hover:bg-yellow"
         onClick={handleChange}
       >
-        Add New
+        Edit
       </button>
 
       {modal && (
         <div className="modal modal-open">
           <div className="modal-box">
-            <h3 className="font-bold text-lg">Add New Detail</h3>
-            <form onSubmit={handleSubmit}>
+            <h3 className="font-bold text-lg">Edit {detail.title}</h3>
+            <form onSubmit={handleUpdate}>
               <div className="form-control">
                 <label htmlFor="detail-title" className="label font-bold">
                   Title
@@ -85,12 +86,13 @@ export default function AddDetails() {
                   Price
                 </label>
                 <input
-                  type="text"
+                  type="number" // Change to number input
                   id="detail-price"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   className="input w-full input-bordered"
                   placeholder="Price"
+                  min="0"
                 />
               </div>
               <div className="modal-action">

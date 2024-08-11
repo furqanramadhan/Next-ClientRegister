@@ -1,5 +1,6 @@
 import AddDetails from "./AddDetails";
 import DropDetails from "./DropDetails";
+import UpdateDetails from "./UpdateDetails";
 
 type Detail = {
   id: number;
@@ -45,15 +46,17 @@ export default async function ProductList() {
             </tr>
           </thead>
           <tbody>
-            {details.map((detail) => (
+            {details.map((detail, index) => (
               <tr
                 key={detail.id}
                 className="bg-white border-b last:border-none hover:bg-gray-50"
               >
-                <td className="px-4 py-2 text-left">{detail.id}</td>
+                <td className="px-4 py-2 text-left">{index + 1}</td>
                 <td className="px-4 py-2 text-left">{detail.title}</td>
                 <td className="px-4 py-2 text-left">{detail.price}</td>
-                <td>
+                <td className="text-center flex gap-2">
+                  {/* Use flex and gap for spacing */}
+                  <UpdateDetails {...detail} />
                   <DropDetails {...detail} />
                 </td>
               </tr>

@@ -34,7 +34,10 @@ export default function DropDetails(detail: Detail) {
 
   return (
     <div>
-      <button className="btn btn-error btn-sm" onClick={handleChange}>
+      <button
+        className="btn btn-error text-white btn-sm"
+        onClick={handleChange}
+      >
         Delete
       </button>
 
