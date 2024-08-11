@@ -38,9 +38,9 @@ export default async function ProductList() {
                 key={detail.id}
                 className="bg-white border-b last:border-none hover:bg-gray-50"
               >
-                <td className="px-4 py-2 text-center">{index + 1}</td>
-                <td className="px-4 py-2 text-center">{detail.title}</td>
-                <td className="px-4 py-2 text-center">{detail.price}</td>
+                <td className="px-4 py-2 text-left">{index + 1}</td>
+                <td className="px-4 py-2 text-left">{detail.title}</td>
+                <td className="px-4 py-2 text-left">{detail.price}</td>
               </tr>
             ))}
           </tbody>
