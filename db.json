@@ -1,19 +1,14 @@
 {
   "details": [
     {
-      "id": 1,
-      "title": "Details 1",
-      "price": 313
-    },
-    {
-      "id": 2,
+      "id": "2",
       "title": "Details 2 Update",
       "price": 623
     },
     {
-      "id": 3,
-      "title": "Details 3",
-      "price": 304
+      "id": "6ddd",
+      "title": "z",
+      "price": "z"
     }
   ]
 }
