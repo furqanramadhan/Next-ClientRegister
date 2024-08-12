@@ -74,6 +74,7 @@ const RegisterForm = () => {
       console.error("Error submitting form:", error);
     }
   };
+
   const handleClick = () => {
     const fileInput = document.getElementById(
       "companyImage"
