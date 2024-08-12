@@ -1,0 +1,29 @@
+import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+export async function POST(request: Request) {
+  try {
+    const data = await request.json();
+
+    const newFormData = await prisma.formData.create({
+      data: {
+        companyName: data.companyName,
+        clientName: data.clientName,
+        description: data.description,
+        companyImage: data.companyImage,
+        position: data.position,
+        contractNumber: data.contractNumber,
+        workPeriod: data.workPeriod,
+        insuranceNumber: data.insuranceNumber,
+        requestDate: new Date(data.requestDate),
+      },
+    });
+
+    return NextResponse.json(newFormData);
+  } catch (error) {
+    console.error("Error saving data:", error);
+    return NextResponse.json({ error: "Failed to save data" }, { status: 500 });
+  }
+}

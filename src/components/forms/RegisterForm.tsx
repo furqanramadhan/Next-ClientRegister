@@ -1,5 +1,4 @@
 "use client";
-
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -21,15 +20,12 @@ const FormSchema = z.object({
   clientName: z.string(),
   description: z.string(),
   companyImage: z
-    .instanceof(FileList)
+    .string()
     .optional()
     .refine(
-      (fileList) => {
-        if (!fileList) return true;
-        const allowedTypes = ["image/png", "image/jpeg"];
-        return Array.from(fileList).every((file) =>
-          allowedTypes.includes(file.type)
-        );
+      (val) => {
+        // Example of checking file type
+        return val ? ["image/png", "image/jpeg"].includes(val) : true;
       },
       {
         message: "Only PNG and JPG files are allowed",
@@ -37,7 +33,12 @@ const FormSchema = z.object({
     ),
   position: z.string(),
   contractNumber: z.string(),
-  workPeriod: z.number(),
+  workPeriod: z
+    .string()
+    .transform((val) => Number(val))
+    .refine((val) => val >= 0, {
+      message: "Periode kerja tidak boleh negatif",
+    }),
   insuranceNumber: z.string(),
   requestDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Invalid date format",
@@ -54,10 +55,25 @@ const RegisterForm = () => {
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log("Form Submitted!", data);
-  };
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
+      if (response.ok) {
+        console.log("Form Submitted Successfully!");
+      } else {
+        console.error("Failed to submit form");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
   const handleClick = () => {
     const fileInput = document.getElementById(
       "companyImage"
@@ -78,29 +94,26 @@ const RegisterForm = () => {
         return;
       }
 
-      setFileNames(validFiles.map((file) => file.name)); // Update state with file names
-      setValue("companyImage", files); // Update form value with the selected files
-
-      // Set preview image
+      setFileNames(validFiles.map((file) => file.name));
+      setValue("companyImage", validFiles[0].type); // Save file type or other identifier
       const previewURL = URL.createObjectURL(validFiles[0]);
       setPreviewImage(previewURL);
     }
   };
 
   const handleDeleteImage = () => {
-    setFileNames([]); // Clear file names state
-    setPreviewImage(null); // Clear preview image state
-    setValue("companyImage", undefined); // Clear the file input in the form
+    setFileNames([]);
+    setPreviewImage(null);
+    setValue("companyImage", undefined);
     const fileInput = document.getElementById(
       "companyImage"
     ) as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = ""; // Clear the file input element
+      fileInput.value = "";
     }
   };
 
   const handleClearAll = () => {
-    // Reset form values to defaults
     reset({
       companyName: "",
       clientName: "",
@@ -113,16 +126,14 @@ const RegisterForm = () => {
       requestDate: "",
     });
 
-    // Clear file names and preview image
     setFileNames([]);
     setPreviewImage(null);
 
-    // Reset file input
     const fileInput = document.getElementById(
       "companyImage"
     ) as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = ""; // Clear the file input element
+      fileInput.value = "";
     }
   };
 
@@ -275,6 +286,7 @@ const RegisterForm = () => {
                     className="bg-white text-black"
                     placeholder="Masukkan periode kerja"
                     {...field}
+                    min="0" // Ensure input field does not accept negative numbers
                   />
                 </FormControl>
                 <FormMessage />
@@ -302,19 +314,17 @@ const RegisterForm = () => {
             control={form.control}
             name="requestDate"
             render={({ field }) => (
-              <div className="flex gap-5">
-                <FormItem className="flex-1">
-                  <FormLabel>Tanggal Permintaan</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="date"
-                      className="bg-white text-black w-3/2 border border-gray-300 rounded-md"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </div>
+              <FormItem>
+                <FormLabel>Tanggal Permintaan</FormLabel>
+                <FormControl>
+                  <Input
+                    type="date"
+                    className="bg-white text-black w-3/2 border border-gray-300 rounded-md"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
           />
           <FormItem>
