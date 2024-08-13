@@ -319,7 +319,7 @@ const RegisterForm = () => {
                 <FormLabel>Tanggal Permintaan</FormLabel>
                 <FormControl>
                   <Input
-                    type="date"
+                    type="datetime-local"
                     className="bg-white text-black w-3/2 border border-gray-300 rounded-md"
                     {...field}
                   />
