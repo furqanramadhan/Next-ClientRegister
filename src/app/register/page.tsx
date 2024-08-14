@@ -1,13 +1,17 @@
 import { Input } from "@/components/ui/input";
 import { RiAdminFill } from "react-icons/ri";
 import { IoIosLock } from "react-icons/io";
+import { HiOutlineMail } from "react-icons/hi";
 import { Button } from "@/components/ui/button"; // Ensure you have a Button component
+import { useState } from "react";
 
 export const metadata = {
-  title: "Login",
+  title: "Register",
 };
 
-export default function Login() {
+export default function Register() {
+  const [info, setInfo] = useState({ username: "", email: "", password: "" });
+
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen py-2">
       <main className="relative flex flex-col items-center justify-center w-full flex-1 px-4 text-center">
@@ -18,14 +22,14 @@ export default function Login() {
             </div>
             <div className="py-10">
               <h2 className="text-2xl mb-3 font-semibold font-sans text-black">
-                Login to account
+                Sign Up
               </h2>
               <div className="border-2 w-10 border-black inline-block mb-3"></div>
-              <p className="text-gray-500 my-2">
-                Use your username and password
+              <p className="text-gray-500 my-2 mb-5">
+                Masukkan username, email, dan password
               </p>
               <div className="flex flex-col items-center">
-                <div className="bg-gray-100 w-full max-w-xs p-2 rounded-md flex items-center mb-3">
+                <div className="bg-gray-100 w-64 p-2 rounded-md flex items-center mb-3">
                   <RiAdminFill className="text-gray-400 mr-2 text-xl" />
                   <Input
                     type="text"
@@ -34,7 +38,16 @@ export default function Login() {
                     className="bg-gray-100 text-sm flex-auto border border-transparent rounded-md"
                   />
                 </div>
-                <div className="bg-gray-100 w-full max-w-xs p-2 rounded-md flex items-center mb-3">
+                <div className="bg-gray-100 w-64 p-2 rounded-md flex items-center mb-3">
+                  <HiOutlineMail className="text-gray-400 mr-2 text-xl" />
+                  <Input
+                    type="text"
+                    name="email"
+                    placeholder="Email"
+                    className="bg-gray-100 text-sm flex-auto border border-transparent rounded-md"
+                  />
+                </div>
+                <div className="bg-gray-100 w-64 p-2 rounded-md flex items-center mb-3">
                   <IoIosLock className="text-gray-400 mr-2 text-xl" />
                   <Input
                     type="password"
@@ -44,7 +57,7 @@ export default function Login() {
                   />
                 </div>
                 <Button className="mt-5 bg-green text-white rounded-full px-6 py-2 hover:bg-orange-500">
-                  Login
+                  Sign Up
                 </Button>
               </div>
             </div>
@@ -54,8 +67,8 @@ export default function Login() {
               Hello, Admin!
             </h2>
             <div className="border-2 w-10 border-white inline-block mb-3"></div>
-            <p className="text-center mb-5">
-              Silahkan mengisi kredensial anda dan berikan akses klien.
+            <p className="mb-5 text-center">
+              Silahkan mendaftar dan mengisi kredensial anda.
             </p>
           </div>
         </div>

@@ -2,6 +2,7 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 
 export interface IUser extends Document {
   username: string;
+  email: string;
   password: string;
 }
 const userSchema: Schema<IUser> = new Schema(
@@ -9,6 +10,11 @@ const userSchema: Schema<IUser> = new Schema(
     username: {
       type: String,
       required: [true, "Username cannot be empty"],
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: [true, "Email cannot be empty"],
       unique: true,
     },
     password: {
