@@ -20,10 +20,10 @@ export default function Home() {
               mobile and desktop
             </p>
             <Link
-              href="/register"
+              href="/request"
               className="flex items-center btn btn-sm lg:btn-lg bg-green justify-center text-white rounded-md border-none lg:w-44 capitalize"
             >
-              Register here
+              Request here
             </Link>
           </div>
           <div className="relative w-48 h-48 rounded-full overflow-hidden">

@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import RegisterModal from "./RegisterModal"; // Import the Modal component
+import RequestModal from "./RequestModal"; // Import the Modal component
 
 const FormSchema = z.object({
   companyName: z.string(),
@@ -46,7 +46,7 @@ const FormSchema = z.object({
   }),
 });
 
-const RegisterForm = () => {
+const RequestForm = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -58,7 +58,7 @@ const RegisterForm = () => {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("/api/request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -141,7 +141,7 @@ const RegisterForm = () => {
 
   return (
     <div>
-      <RegisterModal
+      <RequestModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="Tipe file invalid"
@@ -351,4 +351,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default RequestForm;
