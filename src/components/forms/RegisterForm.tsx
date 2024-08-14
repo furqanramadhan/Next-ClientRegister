@@ -8,6 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import Head from "next/head";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";

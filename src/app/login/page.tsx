@@ -11,11 +11,6 @@ export const metadata = {
 export default function Login() {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen py-2">
-      <Head>
-        <title>Create Next Login Page</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <main className="relative flex flex-col items-center justify-center w-full flex-1 px-4 text-center">
         <div className="relative bg-white rounded-2xl shadow-2xl flex w-full max-w-4xl overflow-hidden">
           <div className="relative w-3/5 p-5">
