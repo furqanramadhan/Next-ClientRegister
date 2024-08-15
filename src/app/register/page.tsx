@@ -1,16 +1,54 @@
+"use client";
 import { Input } from "@/components/ui/input";
 import { RiAdminFill } from "react-icons/ri";
 import { IoIosLock } from "react-icons/io";
 import { HiOutlineMail } from "react-icons/hi";
-import { Button } from "@/components/ui/button"; // Ensure you have a Button component
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
-
-export const metadata = {
-  title: "Register",
-};
 
 export default function Register() {
   const [info, setInfo] = useState({ username: "", email: "", password: "" });
+  const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
+
+  function handleInput(e: { target: { name: string; value: string } }) {
+    setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  async function handleSubmit(e: {
+    [x: string]: any;
+    preventDefault: () => void;
+  }) {
+    e.preventDefault();
+
+    if (!info.username || !info.email || !info.password) {
+      setError("Must provide all credentials.");
+    }
+
+    try {
+      setPending(true);
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(info),
+      });
+      if (res.ok) {
+        setPending(false);
+        const form = e.target;
+        form.reset();
+        console.log("User Registered!");
+      } else {
+        const errorData = await res.json();
+        setError(errorData.message);
+        setPending(false);
+      }
+    } catch (error) {
+      setPending(false);
+      setError("Something went wrong");
+    }
+  }
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen py-2">
@@ -28,13 +66,17 @@ export default function Register() {
               <p className="text-gray-500 my-2 mb-5">
                 Masukkan username, email, dan password
               </p>
-              <div className="flex flex-col items-center">
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col items-center"
+              >
                 <div className="bg-gray-100 w-64 p-2 rounded-md flex items-center mb-3">
                   <RiAdminFill className="text-gray-400 mr-2 text-xl" />
                   <Input
                     type="text"
                     name="username"
                     placeholder="Username"
+                    onChange={handleInput}
                     className="bg-gray-100 text-sm flex-auto border border-transparent rounded-md"
                   />
                 </div>
@@ -44,6 +86,7 @@ export default function Register() {
                     type="text"
                     name="email"
                     placeholder="Email"
+                    onChange={handleInput}
                     className="bg-gray-100 text-sm flex-auto border border-transparent rounded-md"
                   />
                 </div>
@@ -53,13 +96,18 @@ export default function Register() {
                     type="password"
                     name="password"
                     placeholder="Password"
+                    onChange={handleInput}
                     className="bg-gray-100 text-sm flex-auto border border-transparent rounded-md"
                   />
                 </div>
-                <Button className="mt-5 bg-green text-white rounded-full px-6 py-2 hover:bg-orange-500">
+                {error && <span className="message">{error}</span>}
+                <Button
+                  type="submit"
+                  className="mt-5 bg-green text-white rounded-full px-6 py-2 hover:bg-orange-500"
+                >
                   Sign Up
                 </Button>
-              </div>
+              </form>
             </div>
           </div>
           <div className="relative w-full md:w-2/5 bg-teal text-white rounded-tr-2xl rounded-br-2xl py-20 px-10 flex flex-col items-center justify-center">

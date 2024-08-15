@@ -28,3 +28,10 @@ model FormData{
   @@map("cient_data") // Nama tabel dalam database
 }
 
+model UserAuth{
+  username  String
+  email     String
+  password  String
+  @@map("user_data")
+}
+
