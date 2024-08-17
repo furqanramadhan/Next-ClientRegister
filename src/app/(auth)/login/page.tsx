@@ -6,11 +6,14 @@ import { Button } from "@/components/ui/button"; // Ensure you have a Button com
 import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import LoginModal from "@/components/auth/LoginModal";
 
 export default function Login() {
   const [info, setInfo] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const router = useRouter();
 
   function handleInput(e: { target: { name: string; value: string } }) {
@@ -35,12 +38,16 @@ export default function Login() {
         password: info.password,
         redirect: false,
       });
+      setModalOpen(true);
+      setTimeout(() => {
+        router.replace("/");
+      }, 3500);
+
       if (res?.error) {
         setError("Invalid Credentials.");
         setPending(false);
         return;
       }
-      router.replace("/");
     } catch (error) {
       setPending(false);
       setError("Something went wrong");
@@ -106,6 +113,12 @@ export default function Login() {
           </div>
         </div>
       </main>
+      <LoginModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Log In Successful"
+        message="You will be redirected to the main page shortly."
+      />
     </div>
   );
 }

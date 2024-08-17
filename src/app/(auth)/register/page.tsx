@@ -12,7 +12,7 @@ export default function Register() {
   const [info, setInfo] = useState({ username: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false); // State to control modal visibility
+  const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
   function handleInput(e: { target: { name: string; value: string } }) {
@@ -44,10 +44,8 @@ export default function Register() {
         const form = e.target;
         form.reset();
         setModalOpen(true); // Open the modal on successful registration
-
-        // Redirect to login page after 5 seconds
         setTimeout(() => {
-          router.push("/login"); // Replace with your login page route
+          router.push("/login");
         }, 3500);
       } else {
         const errorData = await res.json();
