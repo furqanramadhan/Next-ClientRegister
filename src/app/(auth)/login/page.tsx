@@ -30,15 +30,12 @@ export default function Login() {
 
     try {
       setPending(true);
-      const result = await signIn("credentials", {
+      const res = await signIn("credentials", {
+        username: info.username,
+        password: info.password,
         redirect: false,
-        credentials: {
-          username: info.username,
-          password: info.password,
-        },
       });
-
-      if (result?.error) {
+      if (res?.error) {
         setError("Invalid Credentials.");
         setPending(false);
         return;
@@ -47,8 +44,6 @@ export default function Login() {
     } catch (error) {
       setPending(false);
       setError("Something went wrong");
-    } finally {
-      setPending(false);
     }
   }
 
@@ -93,7 +88,7 @@ export default function Login() {
                       className="bg-gray-100 text-sm flex-auto border border-transparent rounded-md"
                     />
                   </div>
-                  <Button className="mt-5 bg-green text-white rounded-full px-6 py-2 hover:bg-orange-500">
+                  <Button className="mt-5 bg-green text-white rounded-full px-6 py-2 hover:bg-orange-500 primary-btn change-btn">
                     Login
                   </Button>
                 </div>

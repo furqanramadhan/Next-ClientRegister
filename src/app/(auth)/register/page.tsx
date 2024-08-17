@@ -27,12 +27,12 @@ export default function Register() {
 
     if (!info.username || !info.email || !info.password) {
       setError("Must provide all credentials.");
-      return; // Stop execution if validation fails
+      return;
     }
 
     try {
       setPending(true);
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -113,9 +113,9 @@ export default function Register() {
                 {error && <span className="message">{error}</span>}
                 <Button
                   type="submit"
-                  className="mt-5 bg-green text-white rounded-full px-6 py-2 hover:bg-orange-500"
+                  className="mt-5 bg-green text-white rounded-full px-6 py-2 hover:bg-orange-500 primary-btn change-btn"
                 >
-                  Sign Up
+                  {pending ? "Signing Up" : "Sign Up"}
                 </Button>
               </form>
             </div>
