@@ -5,11 +5,15 @@ import { IoIosLock } from "react-icons/io";
 import { HiOutlineMail } from "react-icons/hi";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import RegisterModal from "@/components/auth/RegisterModal";
 
 export default function Register() {
   const [info, setInfo] = useState({ username: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false); // State to control modal visibility
+  const router = useRouter();
 
   function handleInput(e: { target: { name: string; value: string } }) {
     setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -23,6 +27,7 @@ export default function Register() {
 
     if (!info.username || !info.email || !info.password) {
       setError("Must provide all credentials.");
+      return; // Stop execution if validation fails
     }
 
     try {
@@ -38,7 +43,12 @@ export default function Register() {
         setPending(false);
         const form = e.target;
         form.reset();
-        console.log("User Registered!");
+        setModalOpen(true); // Open the modal on successful registration
+
+        // Redirect to login page after 5 seconds
+        setTimeout(() => {
+          router.push("/login"); // Replace with your login page route
+        }, 3500);
       } else {
         const errorData = await res.json();
         setError(errorData.message);
@@ -121,6 +131,14 @@ export default function Register() {
           </div>
         </div>
       </main>
+
+      {/* RegisterModal component usage */}
+      <RegisterModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Registration Successful"
+        message="You have successfully registered. You will be redirected to the login page shortly."
+      />
     </div>
   );
 }
