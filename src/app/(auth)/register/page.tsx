@@ -113,7 +113,7 @@ export default function Register() {
                   type="submit"
                   className="mt-5 bg-green text-white rounded-full px-6 py-2 hover:bg-orange-500 primary-btn change-btn"
                 >
-                  {pending ? "Signing Up" : "Sign Up"}
+                  {pending ? "Signing Up.." : "Sign Up"}
                 </Button>
               </form>
             </div>

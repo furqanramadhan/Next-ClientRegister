@@ -3,8 +3,8 @@ import { Input } from "@/components/ui/input";
 import { RiAdminFill } from "react-icons/ri";
 import { IoIosLock } from "react-icons/io";
 import { Button } from "@/components/ui/button"; // Ensure you have a Button component
-import { redirect, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import LoginModal from "@/components/auth/LoginModal";
 
@@ -13,17 +13,26 @@ export default function Login() {
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [alreadyLoggedIn] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("userToken");
+
+    if (token) {
+      setModalOpen(true);
+      setTimeout(() => {
+        router.replace("/");
+      }, 2000);
+    }
+  }, [router]);
 
   function handleInput(e: { target: { name: string; value: string } }) {
     setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  async function handleSubmit(e: {
-    [x: string]: any;
-    preventDefault: () => void;
-  }) {
+  async function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
 
     if (!info.username || !info.password) {
@@ -38,24 +47,33 @@ export default function Login() {
         password: info.password,
         redirect: false,
       });
-      setModalOpen(true);
-      setTimeout(() => {
-        router.replace("/");
-      }, 3500);
 
       if (res?.error) {
         setError("Invalid Credentials.");
         setPending(false);
         return;
       }
-      // Simpan token atau data pengguna ke localStorage
       if (res?.status === 200) {
         localStorage.setItem("userToken", JSON.stringify(res));
       }
+      setModalOpen(true);
+      setTimeout(() => {
+        router.replace("/");
+      }, 3500);
     } catch (error) {
       setPending(false);
       setError("Something went wrong");
     }
+  }
+  if (alreadyLoggedIn) {
+    return (
+      <LoginModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Already Logged In"
+        message="You are already logged in. Redirecting to the home page..."
+      />
+    );
   }
 
   return (
@@ -99,8 +117,11 @@ export default function Login() {
                       className="bg-gray-100 text-sm flex-auto border border-transparent rounded-md"
                     />
                   </div>
-                  <Button className="mt-5 bg-green text-white rounded-full px-6 py-2 hover:bg-orange-500 primary-btn change-btn">
-                    Login
+                  <Button
+                    type="submit"
+                    className="mt-5 bg-green text-white rounded-full px-6 py-2 hover:bg-orange-500 primary-btn change-btn"
+                  >
+                    {pending ? "Logging In.." : "Login"}
                   </Button>
                 </div>
               </form>
