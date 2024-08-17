@@ -48,6 +48,10 @@ export default function Login() {
         setPending(false);
         return;
       }
+      // Simpan token atau data pengguna ke localStorage
+      if (res?.status === 200) {
+        localStorage.setItem("userToken", JSON.stringify(res));
+      }
     } catch (error) {
       setPending(false);
       setError("Something went wrong");
