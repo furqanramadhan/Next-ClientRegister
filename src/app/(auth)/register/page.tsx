@@ -126,6 +126,15 @@ export default function Register() {
             <p className="mb-5 text-center">
               Silahkan mendaftar dan mengisi kredensial anda.
             </p>
+            <p className="text-center mb-5">
+              Sudah memiliki akun? login{" "}
+              <button
+                onClick={() => router.push("/login")}
+                className="text-white font-bold hover:underline"
+              >
+                disini
+              </button>
+            </p>
           </div>
         </div>
       </main>

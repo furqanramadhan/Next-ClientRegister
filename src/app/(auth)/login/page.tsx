@@ -90,14 +90,14 @@ export default function Login() {
               </h2>
               <div className="border-2 w-10 border-black inline-block mb-3"></div>
               <p className="text-gray-500 my-2">
-                Use your username and password
+                Masukkan username and password
               </p>
               <form
                 onSubmit={handleSubmit}
                 className="flex flex-col items-center"
               >
                 <div className="flex flex-col items-center">
-                  <div className="bg-gray-100 w-full max-w-xs p-2 rounded-md flex items-center mb-3">
+                  <div className="bg-gray-100 w-64 p-2 rounded-md flex items-center mb-3">
                     <RiAdminFill className="text-gray-400 mr-2 text-xl" />
                     <Input
                       type="text"
@@ -107,7 +107,7 @@ export default function Login() {
                       className="bg-gray-100 text-sm flex-auto border border-transparent rounded-md"
                     />
                   </div>
-                  <div className="bg-gray-100 w-full max-w-xs p-2 rounded-md flex items-center mb-3">
+                  <div className="bg-gray-100 w-64 p-2 rounded-md flex items-center mb-3">
                     <IoIosLock className="text-gray-400 mr-2 text-xl" />
                     <Input
                       type="password"
@@ -134,6 +134,15 @@ export default function Login() {
             <div className="border-2 w-10 border-white inline-block mb-3"></div>
             <p className="text-center mb-5">
               Silahkan mengisi kredensial anda dan berikan akses klien.
+            </p>
+            <p className="text-center mb-5">
+              Belum memiliki akun? daftar{" "}
+              <button
+                onClick={() => router.push("/register")}
+                className="text-white font-bold hover:underline"
+              >
+                disini
+              </button>
             </p>
           </div>
         </div>

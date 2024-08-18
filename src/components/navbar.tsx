@@ -50,7 +50,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-black py-2 border-b border-s-zinc-200 fixed top-0 w-full z-10">
+    <div className="bg-army py-2 border-b border-s-zinc-200 fixed top-0 w-full z-10">
       <div className="container mx-auto flex items-center justify-between px-4">
         <KeyRound className="text-2xl text-white" />
         <div className="flex-1 flex justify-center space-x-4">

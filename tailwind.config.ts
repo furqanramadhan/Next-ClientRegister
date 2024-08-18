@@ -59,6 +59,7 @@ const config = {
         black: "#1A2130",
         teal: "#176B87",
         blue: "#009FBD",
+        army: "#1A3636",
       },
       borderRadius: {
         lg: "var(--radius)",
