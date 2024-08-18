@@ -40,10 +40,12 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      <div className="overflow-x-auto">
-        <table className="table table-auto min-w-full divide-y divide-gray-200">
+    <div className="p-4 relative min-h-3 flex flex-col">
+      <h1 className="text-2xl font-extrabold mb-8 text-center">
+        Data Member Visitor
+      </h1>
+      <div className="relative overflow-x-auto w-full shadow-lg bg-white rounded-lg p-4">
+        <table className="relative table table-auto text-left min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-300">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -110,8 +112,8 @@ const Dashboard = () => {
           </tbody>
         </table>
       </div>
-      <div className="mt-4">
-        <label htmlFor="entries" className="mr-2">
+      <div className="mt-4 relative items-start justify-between w-full max-w-xl">
+        <label htmlFor="entries" className="mr-2 text-sm font-medium">
           Show
         </label>
         <select
@@ -127,7 +129,7 @@ const Dashboard = () => {
         </select>
         <button
           onClick={handleExportToExcel}
-          className="bg-red-500 text-white ml-5 bg-red rounded-md px-4 py-2 hover:bg-yellow"
+          className="text-white ml-5 bg-red rounded-md px-4 py-2 hover:bg-yellow items-start"
         >
           Excel
         </button>
