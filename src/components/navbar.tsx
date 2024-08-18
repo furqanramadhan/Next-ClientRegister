@@ -45,7 +45,7 @@ const Navbar = () => {
   const handleMouseLeave = () => {
     const id = window.setTimeout(() => {
       setDropdownOpen(false);
-    }, 300); // Adjust delay as needed
+    }, 300);
     setTimeoutId(id);
   };
 
