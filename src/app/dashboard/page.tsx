@@ -1,4 +1,5 @@
 "use client";
+import * as XLSX from "xlsx";
 import { useEffect, useState } from "react";
 
 interface FormData {
@@ -16,6 +17,7 @@ interface FormData {
 
 const Dashboard = () => {
   const [data, setData] = useState<FormData[]>([]);
+  const [entriesToShow, setEntriesToShow] = useState<number>(5);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +31,13 @@ const Dashboard = () => {
     };
     fetchData();
   }, []);
+
+  const handleExportToExcel = () => {
+    const workSheet = XLSX.utils.json_to_sheet(data);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, "Data Member Visitor");
+    XLSX.writeFile(workBook, "Data Member Visitor.xlsx");
+  };
 
   return (
     <div className="p-4">
@@ -67,7 +76,7 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {data.map((item) => (
+            {data.slice(0, entriesToShow).map((item) => (
               <tr key={item.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   {item.id}
@@ -100,6 +109,28 @@ const Dashboard = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="mt-4">
+        <label htmlFor="entries" className="mr-2">
+          Show
+        </label>
+        <select
+          id="entries"
+          value={entriesToShow}
+          onChange={(e) => setEntriesToShow(Number(e.target.value))}
+          className="border border-white rounded p-1"
+        >
+          <option value={5}>5 entries</option>
+          <option value={10}>10 entries</option>
+          <option value={15}>15 entries</option>
+          <option value={data.length}>Show all</option>
+        </select>
+        <button
+          onClick={handleExportToExcel}
+          className="bg-red-500 text-white ml-5 bg-red rounded-md px-4 py-2 hover:bg-yellow"
+        >
+          Excel
+        </button>
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ export default function Login() {
     if (token) {
       setModalOpen(true);
       setTimeout(() => {
-        router.replace("/");
+        router.replace("/dashboard");
       }, 2000);
     }
   }, [router]);
@@ -58,7 +58,7 @@ export default function Login() {
       }
       setModalOpen(true);
       setTimeout(() => {
-        router.replace("/");
+        router.replace("/dashboard");
       }, 3500);
     } catch (error) {
       setPending(false);
@@ -71,7 +71,7 @@ export default function Login() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         title="Already Logged In"
-        message="You are already logged in. Redirecting to the home page..."
+        message="You are already logged in. Redirecting to the dashboard page..."
       />
     );
   }
