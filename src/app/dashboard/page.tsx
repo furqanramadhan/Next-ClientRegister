@@ -1,6 +1,8 @@
 "use client";
 import * as XLSX from "xlsx";
 import { useEffect, useState } from "react";
+import DetailModal from "@/components/forms/DetailModal";
+import { buttonVariants } from "@/components/ui/button";
 
 interface FormData {
   id: number;
@@ -18,6 +20,8 @@ interface FormData {
 const Dashboard = () => {
   const [data, setData] = useState<FormData[]>([]);
   const [entriesToShow, setEntriesToShow] = useState<number>(5);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedData, setIsSelectedData] = useState<FormData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +41,16 @@ const Dashboard = () => {
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, "Data Member Visitor");
     XLSX.writeFile(workBook, "Data Member Visitor.xlsx");
+  };
+
+  const openModal = (item: FormData) => {
+    setIsSelectedData(item);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setIsSelectedData(null);
   };
 
   return (
@@ -75,6 +89,9 @@ const Dashboard = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Request Date
               </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Details
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -107,6 +124,14 @@ const Dashboard = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {item.requestDate}
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <button
+                    onClick={() => openModal(item)}
+                    className={`${buttonVariants()} text-white bg-tosca hover:bg-yellow`}
+                  >
+                    Details
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -134,6 +159,11 @@ const Dashboard = () => {
           Excel
         </button>
       </div>
+      <DetailModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        data={selectedData}
+      />
     </div>
   );
 };

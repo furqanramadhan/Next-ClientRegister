@@ -60,6 +60,7 @@ const config = {
         teal: "#176B87",
         blue: "#009FBD",
         army: "#1A3636",
+        tosca: "#41B3A2",
       },
       borderRadius: {
         lg: "var(--radius)",
