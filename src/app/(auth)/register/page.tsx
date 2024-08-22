@@ -43,7 +43,7 @@ export default function Register() {
         setPending(false);
         const form = e.target;
         form.reset();
-        setModalOpen(true);
+        setModalOpen(true); // Open the modal on successful registration
         setTimeout(() => {
           router.push("/login");
         }, 3500);
@@ -62,13 +62,13 @@ export default function Register() {
     <div className="relative flex flex-col items-center justify-center min-h-screen py-2">
       <main className="relative flex flex-col items-center justify-center w-full flex-1 px-4 text-center">
         <div className="relative bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row w-full max-w-4xl overflow-hidden">
-          <div className="relative w-full p-5">
+          <div className="relative w-full p-7">
             <div className="text-left font-bold">
               <span className="text-green-600">Company</span>Name
             </div>
             <div className="py-10">
               <h2 className="text-2xl mb-3 font-semibold font-sans text-black">
-                Sign Up User
+                Sign Up
               </h2>
               <div className="border-2 w-10 border-black inline-block mb-3"></div>
               <p className="text-gray-500 my-2 mb-5">

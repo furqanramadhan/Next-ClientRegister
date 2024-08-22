@@ -8,7 +8,12 @@ interface ModalProps {
   message: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, message }) => {
+const RequestModal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  title,
+  message,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -26,4 +31,4 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, message }) => {
   );
 };
 
-export default Modal;
+export default RequestModal;
