@@ -31,7 +31,8 @@
     "src/app/api/register/route.ts",
     "src/app/api/auth/[...nextAuth].js",
     "src/app/api/auth/[...nextauth]/route.js",
-    "Middleware.js"
+    "Middleware.js",
+    "src/middleware.js"
   ],
   "exclude": ["node_modules"]
 }

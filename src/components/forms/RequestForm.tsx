@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import RequestModal from "./RequestModal"; // Import the Modal component
+import RequestModal from "./RequestModal";
 
 const FormSchema = z.object({
   companyName: z.string(),
@@ -97,7 +97,7 @@ const RequestForm = () => {
       }
 
       setFileNames(validFiles.map((file) => file.name));
-      setValue("companyImage", validFiles[0].type); // Save file type or other identifier
+      setValue("companyImage", validFiles[0].type);
       const previewURL = URL.createObjectURL(validFiles[0]);
       setPreviewImage(previewURL);
     }

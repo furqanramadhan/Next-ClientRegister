@@ -37,3 +37,4 @@ const LoginModal: React.FC<ModalProps> = ({
 };
 
 export default LoginModal;
+      
