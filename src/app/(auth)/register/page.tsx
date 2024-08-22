@@ -68,11 +68,11 @@ export default function Register() {
             </div>
             <div className="py-10">
               <h2 className="text-2xl mb-3 font-semibold font-sans text-black">
-                Sign Up
+                Sign Up User
               </h2>
               <div className="border-2 w-10 border-black inline-block mb-3"></div>
               <p className="text-gray-500 my-2 mb-5">
-                Masukkan username, email, dan password
+                Masukkan kredensial yang diperlukan untuk user
               </p>
               <form
                 onSubmit={handleSubmit}
@@ -117,24 +117,6 @@ export default function Register() {
                 </Button>
               </form>
             </div>
-          </div>
-          <div className="relative w-full md:w-2/5 bg-teal text-white rounded-tr-2xl rounded-br-2xl py-20 px-10 flex flex-col items-center justify-center">
-            <h2 className="text-3xl font-semibold font-sans mb-3">
-              Hello, Admin!
-            </h2>
-            <div className="border-2 w-10 border-white inline-block mb-3"></div>
-            <p className="mb-5 text-center">
-              Silahkan mendaftar dan mengisi kredensial anda.
-            </p>
-            <p className="text-center mb-5">
-              Sudah memiliki akun? login{" "}
-              <button
-                onClick={() => router.push("/login")}
-                className="text-white font-bold hover:underline"
-              >
-                disini
-              </button>
-            </p>
           </div>
         </div>
       </main>

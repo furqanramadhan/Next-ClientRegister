@@ -53,5 +53,3 @@ export async function connectDB(): Promise<typeof mongoose> {
     throw new Error("Failed to connect to the database");
   }
 }
-
-export { User };

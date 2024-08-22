@@ -3,12 +3,21 @@ import User from "models/userModel";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { NextRequest } from "next/server";
+import { verifyAdminToken } from "utils/verifyAdminToken"; // Import the admin token verification function
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
-    await connectDB(); // Connect to the database as specified in connectDB
+    // Verify the admin token
+    const isAdmin = await verifyAdminToken(req);
+    if (!isAdmin) {
+      return NextResponse.json(
+        { message: "Unauthorized: Only admins can register users." },
+        { status: 403 } // Forbidden status
+      );
+    }
 
-    // Parse JSON request body and type it
+    await connectDB();
+
     const {
       username,
       email,
