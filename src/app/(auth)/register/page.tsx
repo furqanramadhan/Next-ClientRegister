@@ -43,7 +43,7 @@ export default function Register() {
         setPending(false);
         const form = e.target;
         form.reset();
-        setModalOpen(true); // Open the modal on successful registration
+        setModalOpen(true);
         setTimeout(() => {
           router.push("/login");
         }, 3500);
@@ -62,7 +62,7 @@ export default function Register() {
     <div className="relative flex flex-col items-center justify-center min-h-screen py-2">
       <main className="relative flex flex-col items-center justify-center w-full flex-1 px-4 text-center">
         <div className="relative bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row w-full max-w-4xl overflow-hidden">
-          <div className="relative w-full md:w-3/5 p-5">
+          <div className="relative w-full p-5">
             <div className="text-left font-bold">
               <span className="text-green-600">Company</span>Name
             </div>
@@ -72,7 +72,7 @@ export default function Register() {
               </h2>
               <div className="border-2 w-10 border-black inline-block mb-3"></div>
               <p className="text-gray-500 my-2 mb-5">
-                Masukkan kredensial yang diperlukan untuk user
+                Masukkan username, email, dan password
               </p>
               <form
                 onSubmit={handleSubmit}

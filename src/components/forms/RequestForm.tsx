@@ -8,7 +8,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import Head from "next/head";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
@@ -20,7 +19,7 @@ const FormSchema = z.object({
   companyName: z.string(),
   clientName: z.string(),
   description: z.string(),
-  companyImage: z
+  clientImage: z
     .string()
     .optional()
     .refine(
@@ -78,7 +77,7 @@ const RequestForm = () => {
 
   const handleClick = () => {
     const fileInput = document.getElementById(
-      "companyImage"
+      "clientImage"
     ) as HTMLInputElement;
     fileInput.click();
   };
@@ -97,7 +96,7 @@ const RequestForm = () => {
       }
 
       setFileNames(validFiles.map((file) => file.name));
-      setValue("companyImage", validFiles[0].type);
+      setValue("clientImage", validFiles[0].type);
       const previewURL = URL.createObjectURL(validFiles[0]);
       setPreviewImage(previewURL);
     }
@@ -106,9 +105,9 @@ const RequestForm = () => {
   const handleDeleteImage = () => {
     setFileNames([]);
     setPreviewImage(null);
-    setValue("companyImage", undefined);
+    setValue("clientImage", undefined);
     const fileInput = document.getElementById(
-      "companyImage"
+      "clientImage"
     ) as HTMLInputElement;
     if (fileInput) {
       fileInput.value = "";
@@ -120,7 +119,7 @@ const RequestForm = () => {
       companyName: "",
       clientName: "",
       description: "",
-      companyImage: undefined,
+      clientImage: undefined,
       position: "",
       contractNumber: "",
       workPeriod: 0,
@@ -132,7 +131,7 @@ const RequestForm = () => {
     setPreviewImage(null);
 
     const fileInput = document.getElementById(
-      "companyImage"
+      "clientImage"
     ) as HTMLInputElement;
     if (fileInput) {
       fileInput.value = "";
@@ -149,48 +148,6 @@ const RequestForm = () => {
       />
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="relative w-full">
-          <FormField
-            control={form.control}
-            name="companyImage"
-            render={({ field }) => (
-              <FormItem className="mt-6">
-                <FormLabel>Logo Perusahaan</FormLabel>
-                <FormControl>
-                  <div className="flex flex-col items-start gap-2 w-full max-w-sm">
-                    <input
-                      id="companyImage"
-                      type="file"
-                      className="hidden"
-                      onChange={handleFileChange}
-                      multiple
-                    />
-                    <div
-                      className="bg-black text-white rounded text-center px-3 py-1 flex items-center justify-center cursor-pointer"
-                      onClick={handleClick}
-                    >
-                      Upload
-                    </div>
-                    {previewImage && (
-                      <div className="relative mt-2">
-                        <img
-                          src={previewImage}
-                          alt="Preview"
-                          className="max-h-40 border rounded"
-                        />
-                        <Button
-                          className="absolute top-0 right-0 w-8 h-8 hover:bg-yellow flex items-center justify-center bg-white text-black rounded-full"
-                          onClick={handleDeleteImage}
-                        >
-                          x
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="companyName"
@@ -324,6 +281,48 @@ const RequestForm = () => {
                     className="bg-white text-black w-3/2 border border-gray-300 rounded-md"
                     {...field}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="clientImage"
+            render={({ field }) => (
+              <FormItem className="mt-6">
+                <FormLabel>Pas Foto</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col items-start gap-2 w-full max-w-sm">
+                    <input
+                      id="clientImage"
+                      type="file"
+                      className="hidden"
+                      onChange={handleFileChange}
+                      multiple
+                    />
+                    <div
+                      className="bg-black text-white rounded text-center px-3 py-1 flex items-center justify-center cursor-pointer"
+                      onClick={handleClick}
+                    >
+                      Upload Foto
+                    </div>
+                    {previewImage && (
+                      <div className="relative mt-2">
+                        <img
+                          src={previewImage}
+                          alt="Preview"
+                          className="max-h-40 border rounded"
+                        />
+                        <Button
+                          className="absolute top-0 right-0 w-8 h-8 hover:bg-yellow flex items-center justify-center bg-white text-black rounded-full"
+                          onClick={handleDeleteImage}
+                        >
+                          x
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
