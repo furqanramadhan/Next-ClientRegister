@@ -135,15 +135,6 @@ export default function Login() {
             <p className="text-center mb-5">
               Silahkan mengisi kredensial anda dan berikan akses klien.
             </p>
-            <p className="text-center mb-5">
-              Belum memiliki akun? daftar{" "}
-              <button
-                onClick={() => router.push("/register")}
-                className="text-white font-bold hover:underline"
-              >
-                disini
-              </button>
-            </p>
           </div>
         </div>
       </main>
