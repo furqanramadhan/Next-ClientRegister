@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import User from "models/userModel";
-
+import { Admin } from "models/accountModel";
 const saltRounds = 10;
 
 async function ensureAdminExists() {
   try {
-    const adminUser = await User.findOne({ email: "admin@example.com" });
+    const adminUser = await Admin.findOne({ email: "admin@example.com" });
     if (!adminUser) {
       const adminPassword = process.env.ADMIN_PASSWORD;
       if (!adminPassword) {
@@ -17,7 +16,7 @@ async function ensureAdminExists() {
 
       const hashedPassword = await bcrypt.hash(adminPassword, saltRounds);
 
-      await User.create({
+      await Admin.create({
         username: "admin_test",
         email: "admin@example.com",
         password: hashedPassword,

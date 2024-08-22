@@ -8,7 +8,7 @@ interface ModalProps {
   message: string;
 }
 
-const RegisterModal: React.FC<ModalProps> = ({
+const AddUserModal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   title,
@@ -36,4 +36,4 @@ const RegisterModal: React.FC<ModalProps> = ({
   );
 };
 
-export default RegisterModal;
+export default AddUserModal;

@@ -1,19 +1,24 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth/next";
 import bcrypt from "bcrypt";
-import User from "models/userModel";
+import { Admin } from "models/accountModel";
 import { connectDB } from "utils/connectDB";
 
 async function login(credentials) {
   try {
     await connectDB();
-    const user = await User.findOne({ username: credentials.username });
-    if (!user) throw new Error("User not found.");
+    const adminUser = await Admin.findOne({
+      username: credentials.username,
+    });
+    if (!adminUser) throw new Error("User not found.");
 
-    const isCorrect = await bcrypt.compare(credentials.password, user.password);
+    const isCorrect = await bcrypt.compare(
+      credentials.password,
+      adminUser.password
+    );
     if (!isCorrect) throw new Error("Invalid password.");
 
-    return user; // Make sure to return the user object here
+    return adminUser;
   } catch (error) {
     console.error("Login error:", error);
     return null;
@@ -30,8 +35,8 @@ export const authOptions = {
       credentials: {},
       async authorize(credentials) {
         try {
-          const user = await login(credentials);
-          return user;
+          const adminUser = await login(credentials);
+          return adminUser;
         } catch (error) {
           throw new Error("Failed to login");
         }
@@ -39,20 +44,20 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.name = user.username;
-        token.email = user.email;
-        token.id = user.id;
+    async jwt({ token, adminUser }) {
+      if (adminUser) {
+        token.username = adminUser.username;
+        token.email = adminUser.email;
+        token.id = adminUser.id;
       }
       console.log("Token generated: ", token);
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        session.user.name = token.name;
-        session.user.email = token.email;
-        session.user.id = token.id;
+        session.adminUser.username = token.username;
+        session.adminUser.email = token.email;
+        session.adminUser.id = token.id;
       }
       console.log("Session: ", session);
       return session;
