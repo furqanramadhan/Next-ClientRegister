@@ -5,7 +5,7 @@ interface FormLayoutProps {
 }
 
 const FormLayout: FC<FormLayoutProps> = ({ children }) => {
-  return <div className="p-10 rounded-lg">{children}</div>;
+  return <div className="bg-whiteform p-10 rounded-lg">{children}</div>;
 };
 
 export default FormLayout;

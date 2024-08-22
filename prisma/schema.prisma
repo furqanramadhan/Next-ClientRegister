@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model FormData{
+model FormData {
   id              Int      @id @default(autoincrement())
   companyName     String
   clientName      String
@@ -21,17 +21,11 @@ model FormData{
   companyImage    String? 
   position        String
   contractNumber  String
-  workPeriod      Int
+  startDate       DateTime
+  endDate         DateTime
   insuranceNumber String
   requestDate     DateTime
 
-  @@map("cient_data") // Nama tabel dalam database
-}
-
-model UserAuth{
-  username  String
-  email     String
-  password  String
-  @@map("user_data")
+  @@map("client_data") // Nama tabel dalam database
 }
 

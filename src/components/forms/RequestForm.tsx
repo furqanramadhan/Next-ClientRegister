@@ -33,15 +33,15 @@ const FormSchema = z.object({
     ),
   position: z.string(),
   contractNumber: z.string(),
-  workPeriod: z
-    .string()
-    .transform((val) => Number(val))
-    .refine((val) => val >= 0, {
-      message: "Periode kerja tidak boleh negatif",
-    }),
   insuranceNumber: z.string(),
   requestDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Invalid date format",
+  }),
+  startDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid start date format",
+  }),
+  endDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid end date format",
   }),
 });
 
@@ -122,9 +122,10 @@ const RequestForm = () => {
       clientImage: undefined,
       position: "",
       contractNumber: "",
-      workPeriod: 0,
       insuranceNumber: "",
       requestDate: "",
+      startDate: "",
+      endDate: "",
     });
 
     setFileNames([]);
@@ -233,25 +234,42 @@ const RequestForm = () => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="workPeriod"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Periode Kerja (bulan)</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    className="bg-white text-black"
-                    placeholder="Masukkan periode kerja"
-                    {...field}
-                    min="0" // Ensure input field does not accept negative numbers
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex space-x-4">
+            <FormField
+              control={form.control}
+              name="startDate"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Periode Kerja</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      className="bg-white text-black w-full border border-gray-300 rounded-md"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="endDate"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Berakhir</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      className="bg-white text-black w-full border border-gray-300 rounded-md"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="insuranceNumber"

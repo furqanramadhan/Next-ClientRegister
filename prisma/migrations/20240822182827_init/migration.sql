@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `cient_data` (
+CREATE TABLE `client_data` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `companyName` VARCHAR(191) NOT NULL,
     `clientName` VARCHAR(191) NOT NULL,
@@ -7,7 +7,8 @@ CREATE TABLE `cient_data` (
     `companyImage` VARCHAR(191) NULL,
     `position` VARCHAR(191) NOT NULL,
     `contractNumber` VARCHAR(191) NOT NULL,
-    `workPeriod` INTEGER NOT NULL,
+    `startDate` DATETIME(3) NOT NULL,
+    `endDate` DATETIME(3) NOT NULL,
     `insuranceNumber` VARCHAR(191) NOT NULL,
     `requestDate` DATETIME(3) NOT NULL,
 

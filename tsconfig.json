@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "models/adminModel.tsx",
+    "models/userModel.tsx",
     "src/app/api/adduser/route.ts",
     "src/app/api/auth/[...nextAuth].js",
     "src/app/api/auth/[...nextauth]/route.js",

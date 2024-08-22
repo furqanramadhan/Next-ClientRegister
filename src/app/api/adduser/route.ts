@@ -7,10 +7,10 @@ import { z } from "zod";
 
 // Schema validasi untuk data yang diterima dari form
 const FormSchema = z.object({
-  companyName: z.string().min(1, "Company name cannot be empty"),
-  fullName: z.string().min(1, "Full name cannot be empty"),
-  position: z.string().min(1, "Position cannot be empty"),
-  userName: z.string().min(1, "Username cannot be empty"),
+  companyName: z.string(),
+  fullName: z.string(),
+  position: z.string(),
+  userName: z.string(),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
 });
