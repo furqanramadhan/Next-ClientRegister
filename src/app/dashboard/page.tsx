@@ -13,7 +13,8 @@ interface FormData {
   clientImage?: string;
   position: string;
   contractNumber: string;
-  workPeriod: number;
+  startDate: string;
+  endDate: string;
   insuranceNumber: string;
   requestDate: string;
 }
@@ -92,7 +93,10 @@ const Dashboard = () => {
                 Contract Number
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Work Period
+                Start Work
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                End Work
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Insurance Number
@@ -127,13 +131,16 @@ const Dashboard = () => {
                   {item.contractNumber}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.workPeriod}
+                  {new Date(item.startDate).toLocaleDateString("en-CA")}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {new Date(item.endDate).toLocaleDateString("en-CA")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {item.insuranceNumber}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.requestDate}
+                  {item.requestDate.slice(0, 16).replace("T", " ")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <button

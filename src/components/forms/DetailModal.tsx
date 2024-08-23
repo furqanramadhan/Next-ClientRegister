@@ -11,10 +11,11 @@ interface FormData {
   companyName: string;
   clientName: string;
   description: string;
-  companyImage?: string;
+  clientImage?: string;
   position: string;
   contractNumber: string;
-  workPeriod: number;
+  startDate: string;
+  endDate: string;
   insuranceNumber: string;
   requestDate: string;
 }
