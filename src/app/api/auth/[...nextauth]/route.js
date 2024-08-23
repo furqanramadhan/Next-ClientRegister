@@ -1,24 +1,42 @@
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import NextAuth from "next-auth/next";
 import bcrypt from "bcrypt";
-import { Admin } from "models/accountModel";
+import { Admin, User } from "models/accountModel";
 import { connectDB } from "utils/connectDB";
 
 async function login(credentials) {
   try {
     await connectDB();
+
     const adminUser = await Admin.findOne({
       username: credentials.username,
     });
-    if (!adminUser) throw new Error("User not found.");
 
-    const isCorrect = await bcrypt.compare(
-      credentials.password,
-      adminUser.password
-    );
-    if (!isCorrect) throw new Error("Invalid password.");
+    if (adminUser) {
+      const isCorrect = await bcrypt.compare(
+        credentials.password,
+        adminUser.password
+      );
+      if (isCorrect) {
+        return { ...adminUser.toObject(), role: "admin" };
+      }
+    }
 
-    return adminUser;
+    const normalUser = await User.findOne({
+      userName: credentials.username,
+    });
+
+    if (normalUser) {
+      const isCorrect = await bcrypt.compare(
+        credentials.password,
+        normalUser.password
+      );
+      if (isCorrect) {
+        return { ...normalUser.toObject(), role: "user" };
+      }
+    }
+
+    throw new Error("Invalid username or password.");
   } catch (error) {
     console.error("Login error:", error);
     return null;
@@ -35,8 +53,8 @@ export const authOptions = {
       credentials: {},
       async authorize(credentials) {
         try {
-          const adminUser = await login(credentials);
-          return adminUser;
+          const user = await login(credentials);
+          return user;
         } catch (error) {
           throw new Error("Failed to login");
         }
@@ -44,22 +62,22 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, adminUser }) {
-      if (adminUser) {
-        token.username = adminUser.username;
-        token.email = adminUser.email;
-        token.id = adminUser.id;
+    async jwt({ token, user }) {
+      if (user) {
+        token.username = user.username || user.userName;
+        token.email = user.email;
+        token.id = user.id;
+        token.role = user.role; // Save role to token
       }
-      console.log("Token generated: ", token);
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        session.adminUser.username = token.username;
-        session.adminUser.email = token.email;
-        session.adminUser.id = token.id;
+        session.user.username = token.username;
+        session.user.email = token.email;
+        session.user.id = token.id;
+        session.user.role = token.role; // Pass role to session
       }
-      console.log("Session: ", session);
       return session;
     },
   },

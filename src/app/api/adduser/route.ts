@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { NextRequest } from "next/server";
 import { z } from "zod";
+import { verifyAdminToken } from "utils/verifyAdminToken";
 
 // Schema validasi untuk data yang diterima dari form
 const FormSchema = z.object({
@@ -26,6 +27,16 @@ export async function POST(req: NextRequest) {
     // Mengambil data dari permintaan
     const data = await req.json();
     const parsedData = FormSchema.parse(data);
+
+    // Verify the admin token
+    const isAdmin = await verifyAdminToken(req);
+    if (!isAdmin) {
+      console.error("Unauthorized access attempt");
+      return NextResponse.json(
+        { message: "Unauthorized: Only admins can add users." },
+        { status: 403 }
+      );
+    }
 
     // Koneksi ke database
     await connectDB();

@@ -17,6 +17,7 @@ import { IoIosLock } from "react-icons/io";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import AddUserModal from "../auth/AddUserModal";
+import RequestModal from "./RequestModal";
 
 // Extend the form schema to include username, email, and password fields
 const FormSchema = z.object({
@@ -75,11 +76,16 @@ const AddUserForm = () => {
 
   return (
     <div>
-      <AddUserModal
+      <RequestModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="Tipe file invalid"
         message="Only PNG and JPG files are allowed."
+      />
+      <AddUserModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="User Berhasil ditambahkan"
       />
       <Form {...form}>
         <form

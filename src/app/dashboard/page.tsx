@@ -2,6 +2,7 @@
 import * as XLSX from "xlsx";
 import { useEffect, useState } from "react";
 import DetailModal from "@/components/forms/DetailModal";
+import { useSession } from "next-auth/react";
 import { buttonVariants } from "@/components/ui/button";
 
 interface FormData {
@@ -18,6 +19,7 @@ interface FormData {
 }
 
 const Dashboard = () => {
+  const { data: session } = useSession();
   const [data, setData] = useState<FormData[]>([]);
   const [entriesToShow, setEntriesToShow] = useState<number>(5);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -55,6 +57,15 @@ const Dashboard = () => {
 
   return (
     <div className="p-4 relative min-h-3 flex flex-col">
+      {session ? (
+        <div className="text-right mb-4">
+          <p className="text-sm">
+            Logged in as: <strong>{session.user?.email}</strong>
+          </p>
+        </div>
+      ) : (
+        <p className="text-sm text-red-500">You are not logged in.</p>
+      )}
       <h1 className="text-2xl font-extrabold mb-8 text-center">
         Data Member Visitor
       </h1>

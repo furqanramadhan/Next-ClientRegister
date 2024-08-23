@@ -62,9 +62,9 @@ const Navbar = () => {
           </Link>
           <Link
             className="block py-2 px-3 text-white rounded hover:bg-yellow hover:text-gray-900 dark:text-white dark:hover:bg-yellow-500"
-            href="/dashboard"
+            href="/request"
           >
-            Dashboard
+            Request
           </Link>
         </div>
         {user ? (

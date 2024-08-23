@@ -1,19 +1,14 @@
 import React from "react";
 import { MdOutlineCheckCircle } from "react-icons/md";
+import { Button } from "../ui/button";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  message: string;
 }
 
-const AddUserModal: React.FC<ModalProps> = ({
-  isOpen,
-  onClose,
-  title,
-  message,
-}) => {
+const AddUserModal: React.FC<ModalProps> = ({ isOpen, onClose, title }) => {
   if (!isOpen) return null;
 
   return (
@@ -28,10 +23,10 @@ const AddUserModal: React.FC<ModalProps> = ({
           {title}
         </h2>
         <MdOutlineCheckCircle className="text-green text-4xl mb-4" />
-        <p id="modal-message" className="text-center text-gray-700">
-          {message}
-        </p>
       </div>
+      <Button onClick={onClose} className="bg-red text-white">
+        Close
+      </Button>
     </div>
   );
 };
