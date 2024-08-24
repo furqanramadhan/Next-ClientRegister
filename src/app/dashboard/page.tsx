@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import DetailModal from "@/components/forms/DetailModal";
 import { useSession } from "next-auth/react";
 import { buttonVariants } from "@/components/ui/button";
+import ConfirmationModal from "@/components/forms/ConfirmationModal";
 
 interface FormData {
   id: number;
@@ -25,6 +26,12 @@ const Dashboard = () => {
   const [entriesToShow, setEntriesToShow] = useState<number>(5);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedData, setIsSelectedData] = useState<FormData | null>(null);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] =
+    useState<boolean>(false);
+  const [confirmationAction, setConfirmationAction] = useState<string | null>(
+    null
+  );
+  const [currentItem, setCurrentItem] = useState<FormData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,26 +53,40 @@ const Dashboard = () => {
     XLSX.writeFile(workBook, "Data Member Visitor.xlsx");
   };
 
-  const openModal = (item: FormData) => {
+  const openDetailModal = (item: FormData) => {
     setIsSelectedData(item);
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setIsSelectedData(null);
+  const openConfirmationModal = (item: FormData, action: string) => {
+    setCurrentItem(item);
+    setConfirmationAction(action);
+    setIsConfirmationModalOpen(true);
+  };
+  const handleConfirmAction = () => {
+    if (confirmationAction && currentItem) {
+      console.log(`Action ${confirmationAction} for item`, currentItem);
+    }
+    setIsConfirmationModalOpen(false);
+    setConfirmationAction(null);
+    setCurrentItem(null);
   };
 
+  const handleCancelAction = () => {
+    setIsConfirmationModalOpen(false);
+    setConfirmationAction(null);
+    setCurrentItem(null);
+  };
   return (
     <div className="p-4 relative min-h-3 flex flex-col">
       {session ? (
-        <div className="text-right mb-4">
+        <div className="text-left mb-4">
           <p className="text-sm">
             Logged in as: <strong>{session.user?.email}</strong>
           </p>
         </div>
       ) : (
-        <p className="text-sm text-red-500">You are not logged in.</p>
+        <p className="text-sm text-red">You are not logged in.</p>
       )}
       <h1 className="text-2xl font-extrabold mb-8 text-center">
         Data Member Visitor
@@ -104,7 +125,7 @@ const Dashboard = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Request Date
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status Penerimaan
               </th>
             </tr>
@@ -117,7 +138,7 @@ const Dashboard = () => {
                 </td>
                 <td
                   className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 underline cursor-pointer"
-                  onClick={() => openModal(item)}
+                  onClick={() => openDetailModal(item)}
                 >
                   {item.companyName}
                 </td>
@@ -146,14 +167,16 @@ const Dashboard = () => {
                   {item.requestDate.slice(0, 16).replace("T", " ")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="flex justify-center gap-2">
                     <button
-                      className={`${buttonVariants()} text-white bg-tosca hover:bg-yellow w-full`}
+                      onClick={() => openConfirmationModal(item, "accept")}
+                      className={`${buttonVariants()} text-white bg-tosca hover:bg-yellow w-full max-w-xs`}
                     >
                       Terima
                     </button>
                     <button
-                      className={`${buttonVariants()} text-white bg-red hover:bg-yellow w-full`}
+                      onClick={() => openConfirmationModal(item, "reject")}
+                      className={`${buttonVariants()} text-white bg-red hover:bg-yellow w-full max-w-xs`}
                     >
                       Tolak
                     </button>
@@ -190,6 +213,12 @@ const Dashboard = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         data={selectedData}
+      />
+      <ConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onConfirm={handleConfirmAction}
+        onCancel={handleCancelAction}
+        action={confirmationAction || ""}
       />
     </div>
   );

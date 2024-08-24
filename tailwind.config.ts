@@ -61,6 +61,8 @@ const config = {
         blue: "#009FBD",
         army: "#1A3636",
         tosca: "#41B3A2",
+        confirm_yes: "#79AC78",
+        confirm_no: "#A02334",
       },
       borderRadius: {
         lg: "var(--radius)",
