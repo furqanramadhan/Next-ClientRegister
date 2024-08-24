@@ -105,7 +105,7 @@ const Dashboard = () => {
                 Request Date
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Details
+                Status Penerimaan
               </th>
             </tr>
           </thead>
@@ -115,7 +115,10 @@ const Dashboard = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   {item.id}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td
+                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 underline cursor-pointer"
+                  onClick={() => openModal(item)}
+                >
                   {item.companyName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -143,12 +146,18 @@ const Dashboard = () => {
                   {item.requestDate.slice(0, 16).replace("T", " ")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <button
-                    onClick={() => openModal(item)}
-                    className={`${buttonVariants()} text-white bg-tosca hover:bg-yellow`}
-                  >
-                    Details
-                  </button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      className={`${buttonVariants()} text-white bg-tosca hover:bg-yellow w-full`}
+                    >
+                      Terima
+                    </button>
+                    <button
+                      className={`${buttonVariants()} text-white bg-red hover:bg-yellow w-full`}
+                    >
+                      Tolak
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

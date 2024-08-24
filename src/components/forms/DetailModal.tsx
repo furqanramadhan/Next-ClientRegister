@@ -23,25 +23,37 @@ interface FormData {
 const DetailModal: React.FC<DetailModalProps> = ({ isOpen, onClose, data }) => {
   if (!isOpen || !data) return null;
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-CA");
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
         <h2 className="text-2xl font-bold mb-4 text-left">
           Informasi Detail Request Client
         </h2>
-        <div className="space-y-2">
-          {Object.entries(data).map(
-            ([key, value]) =>
-              key !== "companyImage" && (
-                <div key={key} className="flex justify-between items-center">
-                  <span className="font-semibold w-1/3">
-                    {formatLabel(key)}
-                  </span>
-                  <span className="w-1/3 justify-between">:</span>
-                  <span className="w-1/3 text-right">{value}</span>
-                </div>
-              )
-          )}
+        <div className="space-y-3">
+          {Object.entries(data).map(([key, value]) => {
+            if (key === "companyImage") return null;
+
+            let displayValue = value;
+            if (key === "startDate" || key === "endDate") {
+              displayValue = formatDate(value as string);
+            } else if (key === "requestDate") {
+              displayValue = (value as string).slice(0, 16).replace("T", " ");
+            }
+
+            return (
+              <div key={key} className="flex items-center mb-2">
+                <span className="font-semibold w-1/3 text-left">
+                  {formatLabel(key)}
+                </span>
+                <span className=" text-center">:</span>
+                <span className="w-2/3 text-left pl-2">{displayValue}</span>
+              </div>
+            );
+          })}
         </div>
         <div className="flex justify-end mt-6">
           <button
