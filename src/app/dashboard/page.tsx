@@ -18,6 +18,7 @@ interface FormData {
   endDate: string;
   insuranceNumber: string;
   requestDate: string;
+  status: boolean;
 }
 
 const Dashboard = () => {
@@ -36,7 +37,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/dashboard");
+        const response = await fetch("/api/dashboard/default");
         const result = await response.json();
         setData(result);
       } catch (error) {
