@@ -25,6 +25,7 @@ model FormData {
   endDate         DateTime
   insuranceNumber String
   requestDate     DateTime
+  status          Boolean?
 
   @@map("client_data") // Nama tabel dalam database
 }
