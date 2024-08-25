@@ -14,19 +14,25 @@ datasource db {
 }
 
 model FormData {
-  id              Int      @id @default(autoincrement())
-  companyName     String
-  clientName      String
-  description     String
-  companyImage    String? 
-  position        String
-  contractNumber  String
-  startDate       DateTime
-  endDate         DateTime
+  id             Int      @id @default(autoincrement())
+  companyName    String
+  clientName     String
+  description    String
+  companyImage   String?
+  position       String
+  contractNumber String
+  startDate      DateTime
+  endDate        DateTime
   insuranceNumber String
-  requestDate     DateTime
-  status          Boolean?
+  requestDate    DateTime
+  status         Status    @default(Waiting) 
 
-  @@map("client_data") // Nama tabel dalam database
+  @@map("client_data")
+}
+
+enum Status {
+  Waiting
+  Accepted
+  Rejected
 }
 

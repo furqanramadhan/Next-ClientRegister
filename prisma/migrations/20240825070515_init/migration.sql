@@ -11,7 +11,7 @@ CREATE TABLE `client_data` (
     `endDate` DATETIME(3) NOT NULL,
     `insuranceNumber` VARCHAR(191) NOT NULL,
     `requestDate` DATETIME(3) NOT NULL,
-    `status` BOOLEAN NULL,
+    `status` ENUM('Waiting', 'Accepted', 'Rejected') NOT NULL DEFAULT 'Waiting',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
