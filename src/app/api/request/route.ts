@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
   try {
     const data = await request.json();
+    const status = data.status || "Waiting";
 
     const newFormData = await prisma.formData.create({
       data: {
@@ -19,8 +20,11 @@ export async function POST(request: Request) {
         endDate: new Date(data.endDate),
         insuranceNumber: data.insuranceNumber,
         requestDate: new Date(data.requestDate),
+        status: status as any,
       },
     });
+
+    console.log("New form data created:", newFormData);
 
     return NextResponse.json(newFormData);
   } catch (error) {

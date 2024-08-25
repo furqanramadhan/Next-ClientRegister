@@ -14,15 +14,14 @@ export default async function handler(
 
   if (req.method === "PATCH") {
     try {
-      const status = action === "accept";
+      const status = action === "accept" ? "Accepted" : "Rejected";
       await prisma.formData.update({
         where: { id: Number(id) },
         data: { status },
       });
-      res
-        .status(200)
-        .json({ message: `Data ${status ? "Accepted" : "Rejected"}` });
+      res.status(200).json({ message: `Data ${status}` });
     } catch (error) {
+      console.error("Error updating data:", error);
       res.status(500).json({ error: "Error updating data" });
     }
   } else {

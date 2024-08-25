@@ -4,10 +4,11 @@ import prisma from "@/lib/prisma";
 export async function GET() {
   try {
     const data = await prisma.formData.findMany({
-      where: { status: true },
+      where: { status: "Accepted" },
     });
     return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.error();
+    console.error("Error fetching data:", error);
+    return NextResponse.json({ error: "Error fetching data" }, { status: 500 });
   }
 }
