@@ -43,7 +43,7 @@ async function login(credentials) {
   }
 }
 
-export const authOptions = {
+const authOptions = {
   pages: {
     signIn: "/login",
   },
@@ -67,7 +67,8 @@ export const authOptions = {
         token.username = user.username || user.userName;
         token.email = user.email;
         token.id = user.id;
-        token.role = user.role; // Save role to token
+        token.role = user.role;
+        token.companyName = user.companyName;
       }
       return token;
     },
@@ -76,7 +77,8 @@ export const authOptions = {
         session.user.username = token.username;
         session.user.email = token.email;
         session.user.id = token.id;
-        session.user.role = token.role; // Pass role to session
+        session.user.role = token.role;
+        session.user.companyName = token.companyName;
       }
       return session;
     },
@@ -84,4 +86,5 @@ export const authOptions = {
 };
 
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+
+export default handler;

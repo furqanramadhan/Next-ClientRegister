@@ -141,6 +141,9 @@ const Dashboard = () => {
         <div className="text-left mb-4">
           <p className="text-sm">
             Logged in as: <strong>{session.user?.email}</strong>
+            {session.user?.companyName && (
+              <span> (Company: {session.user?.companyName})</span>
+            )}
           </p>
         </div>
       ) : (
@@ -149,101 +152,103 @@ const Dashboard = () => {
       <h1 className="text-2xl font-extrabold mb-8 text-center">
         Data Member Visitor
       </h1>
-      <div className="relative overflow-x-auto w-full shadow-lg bg-white rounded-lg p-8">
-        <table className="relative table table-auto text-left min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-300">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ID
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Company Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Client Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Description
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Position
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Contract Number
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Start Work
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                End Work
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Insurance Number
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Request Date
-              </th>
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status Penerimaan
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {data.slice(0, entriesToShow).map((item) => (
-              <tr key={item.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {item.id}
-                </td>
-                <td
-                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 underline cursor-pointer"
-                  onClick={() => openDetailModal(item)}
-                >
-                  {item.companyName}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.clientName}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.description}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.position}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.contractNumber}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(item.startDate).toLocaleDateString("en-CA")}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(item.endDate).toLocaleDateString("en-CA")}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.insuranceNumber}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.requestDate.slice(0, 16).replace("T", " ")}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <div className="flex justify-center gap-2">
-                    <button
-                      onClick={() => openConfirmationModal(item, "accept")}
-                      className={`${buttonVariants()} text-white bg-tosca hover:bg-yellow w-full max-w-xs`}
-                    >
-                      Terima
-                    </button>
-                    <button
-                      onClick={() => openConfirmationModal(item, "reject")}
-                      className={`${buttonVariants()} text-white bg-red hover:bg-yellow w-full max-w-xs`}
-                    >
-                      Tolak
-                    </button>
-                  </div>
-                </td>
+      <div className="relative overflow-x-auto shadow-lg bg-white rounded-lg p-4">
+        <div className="max-w-full overflow-x-scroll">
+          <table className="w-full table-auto text-left divide-y divide-gray-200">
+            <thead className="bg-gray-300">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                  ID
+                </th>
+                <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-2/12">
+                  Company Name
+                </th>
+                <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-2/12">
+                  Client Name
+                </th>
+                <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-2/12">
+                  Description
+                </th>
+                <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                  Position
+                </th>
+                <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                  Contract Number
+                </th>
+                <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                  Start Work
+                </th>
+                <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                  End Work
+                </th>
+                <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                  Insurance Number
+                </th>
+                <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                  Request Date
+                </th>
+                <th className="px-4 py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-2/12">
+                  Status Penerimaan
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {data.slice(0, entriesToShow).map((item) => (
+                <tr key={item.id}>
+                  <td className="px-4 py-2 break-words text-sm font-medium text-gray-900">
+                    {item.id}
+                  </td>
+                  <td
+                    className="px-4 py-2 break-words text-sm text-gray-500 underline cursor-pointer"
+                    onClick={() => openDetailModal(item)}
+                  >
+                    {item.companyName}
+                  </td>
+                  <td className="px-4 py-2 break-words text-sm text-gray-500">
+                    {item.clientName}
+                  </td>
+                  <td className="px-4 py-2 break-words text-sm text-gray-500">
+                    {item.description}
+                  </td>
+                  <td className="px-4 py-2 break-words text-sm text-gray-500">
+                    {item.position}
+                  </td>
+                  <td className="px-4 py-2 break-words text-sm text-gray-500">
+                    {item.contractNumber}
+                  </td>
+                  <td className="px-4 py-2 break-words text-sm text-gray-500">
+                    {new Date(item.startDate).toLocaleDateString("en-CA")}
+                  </td>
+                  <td className="px-4 py-2 break-words text-sm text-gray-500">
+                    {new Date(item.endDate).toLocaleDateString("en-CA")}
+                  </td>
+                  <td className="px-4 py-2 break-words text-sm text-gray-500">
+                    {item.insuranceNumber}
+                  </td>
+                  <td className="px-4 py-2 break-words text-sm text-gray-500">
+                    {item.requestDate.slice(0, 16).replace("T", " ")}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    <div className="flex flex-col sm:flex-row justify-center gap-2">
+                      <button
+                        onClick={() => openConfirmationModal(item, "accept")}
+                        className={`${buttonVariants()} text-white bg-tosca hover:bg-yellow w-full sm:w-auto`}
+                      >
+                        Terima
+                      </button>
+                      <button
+                        onClick={() => openConfirmationModal(item, "reject")}
+                        className={`${buttonVariants()} text-white bg-red hover:bg-yellow w-full sm:w-auto`}
+                      >
+                        Tolak
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="mt-4 relative items-start justify-between w-full max-w-xl">
@@ -268,153 +273,158 @@ const Dashboard = () => {
           Excel
         </button>
       </div>
-      <div className="flex justify-between space-x-8">
+
+      <div className="flex flex-col lg:flex-row justify-between space-y-8 lg:space-y-0 lg:space-x-8 mt-10">
         {/* Tabel Data Diterima */}
-        <div className="relative overflow-x-auto w-1/2 shadow-lg bg-white rounded-lg p-4 mt-10">
+        <div className="w-full lg:w-1/2 relative overflow-x-auto shadow-lg bg-white rounded-lg p-4">
           <h2 className="text-xl font-bold mb-4">Data Diterima</h2>
-          <table className="relative table table-auto text-left min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-300">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ID
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Company Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Client Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Position
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Contract Number
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Start Work
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  End Work
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Insurance Number
-                </th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status Penerimaan
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {acceptedData.slice(0, entriesToShow).map((item) => (
-                <tr key={item.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {item.id}
-                  </td>
-                  <td
-                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 underline cursor-pointer"
-                    onClick={() => openDetailModal(item)}
-                  >
-                    {item.companyName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.clientName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.position}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.contractNumber}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(item.startDate).toLocaleDateString("en-CA")}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(item.endDate).toLocaleDateString("en-CA")}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.insuranceNumber}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.status}
-                  </td>
+          <div className="max-w-full overflow-x-scroll">
+            <table className="w-full table-auto text-left divide-y divide-gray-200">
+              <thead className="bg-gray-300">
+                <tr>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    ID
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-2/12">
+                    Company Name
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-2/12">
+                    Client Name
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    Position
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    Contract Number
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    Start Work
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    End Work
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    Insurance Number
+                  </th>
+                  <th className="px-4 py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-2/12">
+                    Status Penerimaan
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {acceptedData.slice(0, entriesToShow).map((item) => (
+                  <tr key={item.id}>
+                    <td className="px-4 py-2 break-words text-sm font-medium text-gray-900">
+                      {item.id}
+                    </td>
+                    <td
+                      className="px-4 py-2 break-words text-sm text-gray-500 underline cursor-pointer"
+                      onClick={() => openDetailModal(item)}
+                    >
+                      {item.companyName}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {item.clientName}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {item.position}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {item.contractNumber}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {new Date(item.startDate).toLocaleDateString("en-CA")}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {new Date(item.endDate).toLocaleDateString("en-CA")}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {item.insuranceNumber}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {item.status}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Tabel Data Ditolak */}
-        <div className="relative overflow-x-auto w-1/2 shadow-lg bg-white rounded-lg p-4 mt-10">
+        <div className="w-full lg:w-1/2 relative overflow-x-auto shadow-lg bg-white rounded-lg p-4">
           <h2 className="text-xl font-bold mb-4">Data Ditolak</h2>
-          <table className="relative table table-auto text-left min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-300">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ID
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Company Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Client Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Position
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Contract Number
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Start Work
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  End Work
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Insurance Number
-                </th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status Penerimaan
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {rejectedData.slice(0, entriesToShow).map((item) => (
-                <tr key={item.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {item.id}
-                  </td>
-                  <td
-                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 underline cursor-pointer"
-                    onClick={() => openDetailModal(item)}
-                  >
-                    {item.companyName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.clientName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.position}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.contractNumber}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(item.startDate).toLocaleDateString("en-CA")}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(item.endDate).toLocaleDateString("en-CA")}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.insuranceNumber}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.status}
-                  </td>
+          <div className="max-w-full overflow-x-scroll">
+            <table className="w-full table-auto text-left divide-y divide-gray-200">
+              <thead className="bg-gray-300">
+                <tr>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    ID
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-2/12">
+                    Company Name
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-2/12">
+                    Client Name
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    Position
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    Contract Number
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    Start Work
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    End Work
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    Insurance Number
+                  </th>
+                  <th className="px-4 py-2 text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider w-2/12">
+                    Status Penerimaan
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {rejectedData.slice(0, entriesToShow).map((item) => (
+                  <tr key={item.id}>
+                    <td className="px-4 py-2 break-words text-sm font-medium text-gray-900">
+                      {item.id}
+                    </td>
+                    <td
+                      className="px-4 py-2 break-words text-sm text-gray-500 underline cursor-pointer"
+                      onClick={() => openDetailModal(item)}
+                    >
+                      {item.companyName}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {item.clientName}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {item.position}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {item.contractNumber}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {new Date(item.startDate).toLocaleDateString("en-CA")}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {new Date(item.endDate).toLocaleDateString("en-CA")}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {item.insuranceNumber}
+                    </td>
+                    <td className="px-4 py-2 break-words text-sm text-gray-500">
+                      {item.status}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <DetailModal

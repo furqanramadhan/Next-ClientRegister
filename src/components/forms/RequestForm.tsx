@@ -14,6 +14,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import InvalidModal from "./InvalidModal";
+import Image from "next/image";
 import RequestModal from "./RequestModal";
 
 const FormSchema = z.object({
@@ -322,7 +323,7 @@ const RequestForm = () => {
                     </div>
                     {previewImage && (
                       <div className="relative mt-2">
-                        <img
+                        <Image
                           src={previewImage}
                           alt="Preview"
                           className="max-h-40 border rounded"
