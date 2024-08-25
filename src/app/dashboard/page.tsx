@@ -1,6 +1,6 @@
 "use client";
 import * as XLSX from "xlsx";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import DetailModal from "@/components/forms/DetailModal";
 import { useSession } from "next-auth/react";
 import { buttonVariants } from "@/components/ui/button";
@@ -24,6 +24,8 @@ interface FormData {
 const Dashboard = () => {
   const { data: session } = useSession();
   const [data, setData] = useState<FormData[]>([]);
+  const [acceptedData, setAcceptedData] = useState<FormData[]>([]);
+  const [rejectedData, setRejectedData] = useState<FormData[]>([]);
   const [entriesToShow, setEntriesToShow] = useState<number>(5);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedData, setIsSelectedData] = useState<FormData | null>(null);
@@ -44,7 +46,45 @@ const Dashboard = () => {
         console.error("Error fetching data:", error);
       }
     };
+
     fetchData();
+    const intervalId = setInterval(fetchData, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const fetchAcceptedData = async () => {
+      try {
+        const response = await fetch("/api/dashboard/accepted");
+        const result = await response.json();
+        setAcceptedData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchAcceptedData();
+    const intervalId = setInterval(fetchAcceptedData, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const fetchRejectedData = async () => {
+      try {
+        const response = await fetch("/api/dashboard/rejected");
+        const result = await response.json();
+        setRejectedData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchRejectedData();
+    const intervalId = setInterval(fetchRejectedData, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleExportToExcel = () => {
@@ -64,13 +104,30 @@ const Dashboard = () => {
     setConfirmationAction(action);
     setIsConfirmationModalOpen(true);
   };
-  const handleConfirmAction = () => {
+
+  const handleConfirmAction = async () => {
     if (confirmationAction && currentItem) {
-      console.log(`Action ${confirmationAction} for item`, currentItem);
+      try {
+        await fetch("/api/dashboard/" + currentItem.id, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: currentItem.id,
+            action: confirmationAction,
+          }),
+        });
+        setData((prevData) =>
+          prevData.filter((item) => item.id !== currentItem?.id)
+        );
+        setConfirmationAction(null);
+        setCurrentItem(null);
+        setIsConfirmationModalOpen(false);
+      } catch (error) {
+        console.error("Error confirming action:", error);
+      }
     }
-    setIsConfirmationModalOpen(false);
-    setConfirmationAction(null);
-    setCurrentItem(null);
   };
 
   const handleCancelAction = () => {
@@ -92,7 +149,7 @@ const Dashboard = () => {
       <h1 className="text-2xl font-extrabold mb-8 text-center">
         Data Member Visitor
       </h1>
-      <div className="relative overflow-x-auto w-full shadow-lg bg-white rounded-lg p-4">
+      <div className="relative overflow-x-auto w-full shadow-lg bg-white rounded-lg p-8">
         <table className="relative table table-auto text-left min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-300">
             <tr>
@@ -188,6 +245,7 @@ const Dashboard = () => {
           </tbody>
         </table>
       </div>
+
       <div className="mt-4 relative items-start justify-between w-full max-w-xl">
         <label htmlFor="entries" className="mr-2 text-sm font-medium">
           Show
@@ -209,6 +267,155 @@ const Dashboard = () => {
         >
           Excel
         </button>
+      </div>
+      <div className="flex justify-between space-x-8">
+        {/* Tabel Data Diterima */}
+        <div className="relative overflow-x-auto w-1/2 shadow-lg bg-white rounded-lg p-4 mt-10">
+          <h2 className="text-xl font-bold mb-4">Data Diterima</h2>
+          <table className="relative table table-auto text-left min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-300">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ID
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Company Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Client Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Position
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Contract Number
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Start Work
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  End Work
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Insurance Number
+                </th>
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status Penerimaan
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {acceptedData.slice(0, entriesToShow).map((item) => (
+                <tr key={item.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {item.id}
+                  </td>
+                  <td
+                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 underline cursor-pointer"
+                    onClick={() => openDetailModal(item)}
+                  >
+                    {item.companyName}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.clientName}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.position}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.contractNumber}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(item.startDate).toLocaleDateString("en-CA")}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(item.endDate).toLocaleDateString("en-CA")}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.insuranceNumber}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.status}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Tabel Data Ditolak */}
+        <div className="relative overflow-x-auto w-1/2 shadow-lg bg-white rounded-lg p-4 mt-10">
+          <h2 className="text-xl font-bold mb-4">Data Ditolak</h2>
+          <table className="relative table table-auto text-left min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-300">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ID
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Company Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Client Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Position
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Contract Number
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Start Work
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  End Work
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Insurance Number
+                </th>
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status Penerimaan
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {rejectedData.slice(0, entriesToShow).map((item) => (
+                <tr key={item.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {item.id}
+                  </td>
+                  <td
+                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 underline cursor-pointer"
+                    onClick={() => openDetailModal(item)}
+                  >
+                    {item.companyName}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.clientName}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.position}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.contractNumber}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(item.startDate).toLocaleDateString("en-CA")}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(item.endDate).toLocaleDateString("en-CA")}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.insuranceNumber}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.status}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <DetailModal
         isOpen={isModalOpen}

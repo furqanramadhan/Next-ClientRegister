@@ -1,31 +1,24 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const { id } = req.query;
-  const { action } = req.body;
+export async function PATCH(request: Request) {
+  try {
+    const { id, action } = await request.json();
 
-  if (typeof id !== "string") {
-    return res.status(400).json({ error: "Invalid ID" });
-  }
-
-  if (req.method === "PATCH") {
-    try {
-      const status = action === "accept" ? "Accepted" : "Rejected";
-      await prisma.formData.update({
-        where: { id: Number(id) },
-        data: { status },
-      });
-      res.status(200).json({ message: `Data ${status}` });
-    } catch (error) {
-      console.error("Error updating data:", error);
-      res.status(500).json({ error: "Error updating data" });
+    if (typeof id !== "number" || !["accept", "reject"].includes(action)) {
+      return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
-  } else {
-    res.setHeader("Allow", ["PATCH"]);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+
+    const status = action === "accept" ? "Accepted" : "Rejected";
+
+    const updatedData = await prisma.formData.update({
+      where: { id },
+      data: { status },
+    });
+
+    return NextResponse.json(updatedData);
+  } catch (error) {
+    console.error("Error updating data:", error);
+    return NextResponse.json({ error: "Error updating data" }, { status: 500 });
   }
 }

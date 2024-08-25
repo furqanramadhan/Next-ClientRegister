@@ -17,9 +17,8 @@ import { IoIosLock } from "react-icons/io";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import AddUserModal from "../auth/AddUserModal";
-import RequestModal from "./RequestModal";
+import InvalidModal from "./InvalidModal";
 
-// Extend the form schema to include username, email, and password fields
 const FormSchema = z.object({
   companyName: z.string(),
   fullName: z.string(),
@@ -76,7 +75,7 @@ const AddUserForm = () => {
 
   return (
     <div>
-      <RequestModal
+      <InvalidModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="Tipe file invalid"

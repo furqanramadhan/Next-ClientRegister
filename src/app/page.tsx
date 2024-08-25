@@ -19,12 +19,20 @@ export default function Home() {
               Solution for approval <br className="lg:flex hidden" /> access on
               mobile and desktop
             </p>
-            <Link
-              href="/request"
-              className="flex items-center btn btn-sm lg:btn-lg bg-green justify-center text-white rounded-md border-none lg:w-44 capitalize"
-            >
-              Request here
-            </Link>
+            <div className="flex gap-4">
+              <Link
+                href="/request"
+                className="flex items-center btn btn-sm lg:btn-lg bg-green justify-center text-white rounded-md border-none lg:w-44 capitalize"
+              >
+                Request here
+              </Link>
+              <Link
+                href="/dashboard"
+                className="flex items-center btn btn-sm lg:btn-lg bg-black justify-center text-white rounded-md border-none lg:w-44 capitalize"
+              >
+                Dashboard
+              </Link>
+            </div>
           </div>
           <div className="relative w-48 h-48 rounded-full overflow-hidden">
             <Image src="/logo.png" alt="Logo" layout="fill" objectFit="cover" />

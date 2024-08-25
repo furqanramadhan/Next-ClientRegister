@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import InvalidModal from "./InvalidModal";
 import RequestModal from "./RequestModal";
 
 const FormSchema = z.object({
@@ -24,7 +25,6 @@ const FormSchema = z.object({
     .optional()
     .refine(
       (val) => {
-        // Example of checking file type
         return val ? ["image/png", "image/jpeg"].includes(val) : true;
       },
       {
@@ -67,6 +67,7 @@ const RequestForm = () => {
 
       if (response.ok) {
         console.log("Form Submitted Successfully!");
+        setIsModalOpen(true);
       } else {
         console.error("Failed to submit form");
       }
@@ -141,12 +142,6 @@ const RequestForm = () => {
 
   return (
     <div>
-      <RequestModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Tipe file invalid"
-        message="Only PNG and JPG files are allowed."
-      />
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="relative w-full">
           <FormField
@@ -364,6 +359,18 @@ const RequestForm = () => {
           </FormItem>
         </form>
       </Form>
+      <InvalidModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Tipe file invalid"
+        message="Only PNG and JPG files are allowed."
+      />
+      <RequestModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Success"
+        message="Permintaan berhasil dikirimkan"
+      />
     </div>
   );
 };
