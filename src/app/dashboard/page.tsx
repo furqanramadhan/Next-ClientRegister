@@ -18,7 +18,7 @@ interface FormData {
   endDate: string;
   insuranceNumber: string;
   requestDate: string;
-  status: boolean;
+  status: string;
 }
 
 const Dashboard = () => {
