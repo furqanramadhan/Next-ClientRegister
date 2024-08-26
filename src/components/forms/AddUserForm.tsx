@@ -74,18 +74,7 @@ const AddUserForm = () => {
   };
 
   return (
-    <div>
-      <InvalidModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Tipe file invalid"
-        message="Only PNG and JPG files are allowed."
-      />
-      <AddUserModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="User Berhasil ditambahkan"
-      />
+    <div className="max-w-lg mx-auto p-6 bg-whiteform rounded-lg shadow-md">
       <Form {...form}>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -225,6 +214,17 @@ const AddUserForm = () => {
           </FormItem>
         </form>
       </Form>
+      <InvalidModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Tipe file invalid"
+        message="Only PNG and JPG files are allowed."
+      />
+      <AddUserModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="User Berhasil ditambahkan"
+      />
     </div>
   );
 };

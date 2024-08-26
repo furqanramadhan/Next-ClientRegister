@@ -1,6 +1,6 @@
 "use client";
 import * as XLSX from "xlsx";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DetailModal from "@/components/forms/DetailModal";
 import { useSession } from "next-auth/react";
 import { buttonVariants } from "@/components/ui/button";
@@ -136,16 +136,16 @@ const Dashboard = () => {
     setCurrentItem(null);
   };
   return (
-    <div className="p-4 relative min-h-3 flex flex-col">
+    <div className="p-4 mt-10 relative min-h-3 flex flex-col">
       {session ? (
-        <div className="text-left mb-4">
+        <>
           <p className="text-sm">
-            Logged in as: <strong>{session.user?.email}</strong>
-            {session.user?.companyName && (
-              <span> (Company: {session.user?.companyName})</span>
-            )}
+            Logged in as: {session.user?.email || "Email not available"}
           </p>
-        </div>
+          {session.user?.role !== "admin" && session.user?.companyName && (
+            <p className="text-sm">Company: {session.user.companyName}</p>
+          )}
+        </>
       ) : (
         <p className="text-sm text-red">You are not logged in.</p>
       )}
@@ -249,33 +249,25 @@ const Dashboard = () => {
             </tbody>
           </table>
         </div>
-      </div>
-
-      <div className="mt-4 relative items-start justify-between w-full max-w-xl">
-        <label htmlFor="entries" className="mr-2 text-sm font-medium">
-          Show
-        </label>
-        <select
-          id="entries"
-          value={entriesToShow}
-          onChange={(e) => setEntriesToShow(Number(e.target.value))}
-          className="border border-white rounded p-1"
-        >
-          <option value={5}>5 entries</option>
-          <option value={10}>10 entries</option>
-          <option value={15}>15 entries</option>
-          <option value={data.length}>Show all</option>
-        </select>
-        <button
-          onClick={handleExportToExcel}
-          className="text-white ml-5 bg-red rounded-md px-4 py-2 hover:bg-yellow items-start"
-        >
-          Excel
-        </button>
+        <div className="mt-4 relative items-start justify-between w-full max-w-xl">
+          <label htmlFor="entries" className="mr-2 text-sm font-medium">
+            Show
+          </label>
+          <select
+            id="entries"
+            value={entriesToShow}
+            onChange={(e) => setEntriesToShow(Number(e.target.value))}
+            className="border border-white rounded p-1"
+          >
+            <option value={5}>5 entries</option>
+            <option value={10}>10 entries</option>
+            <option value={15}>15 entries</option>
+            <option value={data.length}>Show all</option>
+          </select>
+        </div>
       </div>
 
       <div className="flex flex-col lg:flex-row justify-between space-y-8 lg:space-y-0 lg:space-x-8 mt-10">
-        {/* Tabel Data Diterima */}
         <div className="w-full lg:w-1/2 relative overflow-x-auto shadow-lg bg-white rounded-lg p-4">
           <h2 className="text-xl font-bold mb-4">Data Diterima</h2>
           <div className="max-w-full overflow-x-scroll">
@@ -348,6 +340,28 @@ const Dashboard = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="mt-4 relative items-start justify-between w-full max-w-xl">
+            <label htmlFor="entries" className="mr-2 text-sm font-medium">
+              Show
+            </label>
+            <select
+              id="entries"
+              value={entriesToShow}
+              onChange={(e) => setEntriesToShow(Number(e.target.value))}
+              className="border border-white rounded p-1"
+            >
+              <option value={5}>5 entries</option>
+              <option value={10}>10 entries</option>
+              <option value={15}>15 entries</option>
+              <option value={data.length}>Show all</option>
+            </select>
+            <button
+              onClick={handleExportToExcel}
+              className="text-white ml-5 bg-red rounded-md px-4 py-2 hover:bg-yellow items-start"
+            >
+              Excel
+            </button>
           </div>
         </div>
 

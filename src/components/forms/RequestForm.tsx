@@ -1,4 +1,5 @@
 "use client";
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -47,8 +48,12 @@ const FormSchema = z.object({
 });
 
 const RequestForm = () => {
+  const { data: session } = useSession();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      companyName: session?.user?.companyName || "",
+    },
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -118,7 +123,6 @@ const RequestForm = () => {
 
   const handleClearAll = () => {
     reset({
-      companyName: "",
       clientName: "",
       description: "",
       clientImage: undefined,
@@ -153,9 +157,10 @@ const RequestForm = () => {
                 <FormLabel>Nama Perusahaan</FormLabel>
                 <FormControl>
                   <Input
-                    className="bg-white text-black"
-                    placeholder="Masukkan nama perusahaan"
+                    className="bg-gray-200 text-center text-black font-bold  border border-gray-300 rounded-md shadow-sm"
                     {...field}
+                    disabled
+                    readOnly
                   />
                 </FormControl>
                 <FormMessage />

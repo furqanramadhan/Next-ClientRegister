@@ -5,8 +5,10 @@ import { buttonVariants } from "./ui/button";
 import { PiUserCircleGearDuotone } from "react-icons/pi";
 import { useState, useEffect, useRef } from "react";
 import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
-const Navbar = () => {
+const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
+  const { data: session } = useSession();
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
@@ -52,7 +54,14 @@ const Navbar = () => {
   return (
     <div className="bg-army py-2 border-b border-s-zinc-200 fixed top-0 w-full z-10">
       <div className="container mx-auto flex items-center justify-between px-4">
-        <KeyRound className="text-2xl text-white" />
+        <KeyRound
+          className={`text-2xl ${
+            session
+              ? "text-white cursor-pointer"
+              : "text-gray-500 cursor-not-allowed"
+          }`}
+          onClick={() => session && toggleSidebar()}
+        />
         <div className="flex-1 flex justify-center space-x-4">
           <Link
             className="block py-2 px-3 text-white rounded hover:bg-yellow hover:text-gray-900 dark:text-white dark:hover:bg-yellow-500"
@@ -74,7 +83,7 @@ const Navbar = () => {
             onMouseLeave={handleMouseLeave}
             ref={dropdownRef}
           >
-            <Link href="/profile">
+            <Link href="/">
               <PiUserCircleGearDuotone className="text-2xl text-white hover:text-yellow cursor-pointer" />
             </Link>
             {dropdownOpen && (

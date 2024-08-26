@@ -17,8 +17,8 @@ async function ensureAdminExists() {
       const hashedPassword = await bcrypt.hash(adminPassword, saltRounds);
 
       await Admin.create({
-        username: "admin_test",
-        email: "admin@example.com",
+        username: "company_admin",
+        email: "admin@company.com",
         password: hashedPassword,
       });
 

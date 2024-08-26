@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Status } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
         endDate: new Date(data.endDate),
         insuranceNumber: data.insuranceNumber,
         requestDate: new Date(data.requestDate),
-        status: status as any,
+        status: status as Status,
       },
     });
 

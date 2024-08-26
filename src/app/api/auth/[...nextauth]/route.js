@@ -43,7 +43,7 @@ async function login(credentials) {
   }
 }
 
-const authOptions = {
+export const authOptions = {
   pages: {
     signIn: "/login",
   },
@@ -85,6 +85,10 @@ const authOptions = {
   },
 };
 
-const handler = NextAuth(authOptions);
+export async function GET(req, res) {
+  return NextAuth(req, res, authOptions);
+}
 
-export default handler;
+export async function POST(req, res) {
+  return NextAuth(req, res, authOptions);
+}
