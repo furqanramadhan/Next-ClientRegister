@@ -34,7 +34,8 @@ const AddUserForm = () => {
   });
 
   const [pending, setPending] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+  const [isInvalidModalOpen, setIsInvalidModalOpen] = useState(false);
   const { reset, handleSubmit, setValue } = form;
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
@@ -50,8 +51,9 @@ const AddUserForm = () => {
 
       if (response.ok) {
         console.log("User Added Successfully!");
-        setPending(false); // End loading state
-        reset(); // Clear the form after successful submission
+        setPending(false);
+        reset();
+        setIsAddUserModalOpen(true);
       } else {
         console.error("Failed to submit new user");
         setPending(false); // End loading state
@@ -215,14 +217,14 @@ const AddUserForm = () => {
         </form>
       </Form>
       <InvalidModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isInvalidModalOpen}
+        onClose={() => setIsInvalidModalOpen(false)}
         title="Tipe file invalid"
         message="Only PNG and JPG files are allowed."
       />
       <AddUserModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isAddUserModalOpen}
+        onClose={() => setIsAddUserModalOpen(false)}
         title="User Berhasil ditambahkan"
       />
     </div>

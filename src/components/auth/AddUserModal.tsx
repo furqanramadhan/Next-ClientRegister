@@ -1,14 +1,20 @@
 import React from "react";
-import { MdOutlineCheckCircle } from "react-icons/md";
+import { FaRegCircleCheck } from "react-icons/fa6";
 import { Button } from "../ui/button";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
+  message: string;
 }
 
-const AddUserModal: React.FC<ModalProps> = ({ isOpen, onClose, title }) => {
+const AddUserModal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  title,
+  message,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -22,11 +28,14 @@ const AddUserModal: React.FC<ModalProps> = ({ isOpen, onClose, title }) => {
         <h2 id="modal-title" className="text-xl font-bold mb-4 text-center">
           {title}
         </h2>
-        <MdOutlineCheckCircle className="text-green text-4xl mb-4" />
+        <FaRegCircleCheck className="text-green text-4xl mb-4" />
+        <p id="modal-message" className="text-center text-gray-700">
+          {message}
+        </p>
+        <Button onClick={onClose} className="bg-red  text-white">
+          Close
+        </Button>
       </div>
-      <Button onClick={onClose} className="bg-red text-white">
-        Close
-      </Button>
     </div>
   );
 };
