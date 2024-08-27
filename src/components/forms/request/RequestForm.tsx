@@ -60,6 +60,7 @@ const RequestForm = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { reset, handleSubmit, setValue } = form;
+  const [isInvalidModalOpen, setIsInvalidModalOpen] = useState(false);
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
@@ -100,7 +101,7 @@ const RequestForm = () => {
       );
 
       if (validFiles.length === 0) {
-        setIsModalOpen(true);
+        setIsInvalidModalOpen(true);
         return;
       }
 
@@ -332,7 +333,7 @@ const RequestForm = () => {
             name="clientImage"
             render={({ field }) => (
               <FormItem className="mt-6">
-                <FormLabel>Pas Foto</FormLabel>
+                <FormLabel>Logo Perusahaan</FormLabel>
                 <FormControl>
                   <div className="flex flex-col items-start gap-2 w-full max-w-sm">
                     <input
@@ -346,11 +347,11 @@ const RequestForm = () => {
                       className="bg-black text-white rounded text-center px-3 py-1 flex items-center justify-center cursor-pointer"
                       onClick={handleClick}
                     >
-                      Upload Foto
+                      Upload
                     </div>
                     {previewImage && (
                       <div className="relative mt-2">
-                        <Image
+                        <img
                           src={previewImage}
                           alt="Preview"
                           className="max-h-40 border rounded"
@@ -388,8 +389,8 @@ const RequestForm = () => {
         </form>
       </Form>
       <InvalidModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isInvalidModalOpen}
+        onClose={() => setIsInvalidModalOpen(false)}
         title="Tipe file invalid"
         message="Only PNG and JPG files are allowed."
       />
