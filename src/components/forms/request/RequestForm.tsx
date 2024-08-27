@@ -8,15 +8,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
+} from "../../ui/form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
 import { useState } from "react";
-import InvalidModal from "./InvalidModal";
+import InvalidModal from "../../invalid/InvalidModal";
 import Image from "next/image";
-import RequestModal from "./RequestModal";
+import RequestModal from "../../request/RequestModal";
 
 const FormSchema = z.object({
   companyName: z.string(),

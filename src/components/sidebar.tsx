@@ -41,7 +41,7 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
           height={40}
           className="rounded-full"
         />
-        <h1 className="ml-2 text-xl font-bold">App Title</h1>
+        <h1 className="ml-2 text-xl font-bold">Client Register</h1>
       </div>
       <nav className="flex-1">
         <ul className="py-4">

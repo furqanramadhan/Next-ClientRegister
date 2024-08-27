@@ -129,7 +129,7 @@ export default function Login() {
           </div>
           <div className="relative w-full md:w-2/5 bg-teal text-white rounded-tr-2xl rounded-br-2xl py-20 px-10 flex flex-col items-center justify-center">
             <h2 className="text-3xl font-semibold font-sans mb-3">
-              Hello, Admin!
+              Access for Approval
             </h2>
             <div className="border-2 w-10 border-white inline-block mb-3"></div>
             <p className="text-center mb-5">

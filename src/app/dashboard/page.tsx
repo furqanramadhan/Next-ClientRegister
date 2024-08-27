@@ -1,10 +1,10 @@
 "use client";
 import * as XLSX from "xlsx";
 import { useEffect, useState } from "react";
-import DetailModal from "@/components/forms/DetailModal";
+import DetailModal from "@/components/detail/DetailModal";
 import { useSession } from "next-auth/react";
 import { buttonVariants } from "@/components/ui/button";
-import ConfirmationModal from "@/components/forms/ConfirmationModal";
+import ConfirmationModal from "@/components/confirmation/ConfirmationModal";
 
 interface FormData {
   id: number;

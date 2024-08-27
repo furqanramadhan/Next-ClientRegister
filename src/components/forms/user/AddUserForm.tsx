@@ -7,17 +7,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
+} from "../../ui/form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HiOutlineMail } from "react-icons/hi";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 import { RiAdminFill } from "react-icons/ri";
 import { IoIosLock } from "react-icons/io";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { useState } from "react";
-import AddUserModal from "../auth/AddUserModal";
-import InvalidModal from "./InvalidModal";
+import AddUserModal from "../../auth/AddUserModal";
+import InvalidModal from "../../invalid/InvalidModal";
 
 const FormSchema = z.object({
   companyName: z.string(),

@@ -1,4 +1,4 @@
-import RequestForm from "@/components/forms/RequestForm";
+import RequestForm from "@/components/forms/request/RequestForm";
 export default function Home() {
   return (
     <div className="w-full">

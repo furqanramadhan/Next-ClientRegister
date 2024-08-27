@@ -1,4 +1,4 @@
-import AddUserForm from "@/components/forms/AddUserForm";
+import AddUserForm from "@/components/forms/user/AddUserForm";
 export default function Home() {
   return (
     <div className="w-full">
