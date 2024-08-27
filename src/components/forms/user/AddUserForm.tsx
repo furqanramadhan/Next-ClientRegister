@@ -225,6 +225,7 @@ const AddUserForm = () => {
       <AddUserModal
         isOpen={isAddUserModalOpen}
         onClose={() => setIsAddUserModalOpen(false)}
+        message=""
         title="User Berhasil ditambahkan"
       />
     </div>
