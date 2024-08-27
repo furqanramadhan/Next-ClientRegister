@@ -49,10 +49,12 @@ const FormSchema = z.object({
 
 const RequestForm = () => {
   const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "admin";
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      companyName: session?.user?.companyName || "",
+      companyName: isAdmin ? session?.user?.companyName || "" : "",
     },
   });
 
@@ -149,24 +151,44 @@ const RequestForm = () => {
     <div>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="relative w-full">
-          <FormField
-            control={form.control}
-            name="companyName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nama Perusahaan</FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-gray-200 text-center text-black font-bold  border border-gray-300 rounded-md shadow-sm"
-                    {...field}
-                    disabled
-                    readOnly
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {isAdmin && (
+            <FormField
+              control={form.control}
+              name="companyName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nama Perusahaan</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="bg-white text-black"
+                      placeholder="Masukkan Nama Perusahaan"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+          {!isAdmin && (
+            <FormField
+              control={form.control}
+              name="companyName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nama Perusahaan</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="bg-gray-200 text-center text-black font-bold border border-gray-300 rounded-md shadow-sm"
+                      value={session?.user?.companyName || ""}
+                      readOnly
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
           <FormField
             control={form.control}
             name="clientName"

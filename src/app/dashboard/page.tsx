@@ -137,6 +137,17 @@ const Dashboard = () => {
   };
   return (
     <div className="p-4 mt-10 relative min-h-3 flex flex-col">
+      <DetailModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        data={selectedData}
+      />
+      <ConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onConfirm={handleConfirmAction}
+        onCancel={handleCancelAction}
+        action={confirmationAction || ""}
+      />
       {session ? (
         <>
           <p className="text-sm">
@@ -354,7 +365,7 @@ const Dashboard = () => {
               <option value={5}>5 entries</option>
               <option value={10}>10 entries</option>
               <option value={15}>15 entries</option>
-              <option value={data.length}>Show all</option>
+              <option value={acceptedData.length}>Show all</option>
             </select>
             <button
               onClick={handleExportToExcel}
@@ -365,7 +376,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Tabel Data Ditolak */}
         <div className="w-full lg:w-1/2 relative overflow-x-auto shadow-lg bg-white rounded-lg p-4">
           <h2 className="text-xl font-bold mb-4">Data Ditolak</h2>
           <div className="max-w-full overflow-x-scroll">
@@ -439,19 +449,30 @@ const Dashboard = () => {
               </tbody>
             </table>
           </div>
+          <div className="mt-4 relative items-start justify-between w-full max-w-xl">
+            <label htmlFor="entries" className="mr-2 text-sm font-medium">
+              Show
+            </label>
+            <select
+              id="entries"
+              value={entriesToShow}
+              onChange={(e) => setEntriesToShow(Number(e.target.value))}
+              className="border border-white rounded p-1"
+            >
+              <option value={5}>5 entries</option>
+              <option value={10}>10 entries</option>
+              <option value={15}>15 entries</option>
+              <option value={rejectedData.length}>Show all</option>
+            </select>
+            <button
+              onClick={handleExportToExcel}
+              className="text-white ml-5 bg-red rounded-md px-4 py-2 hover:bg-yellow items-start"
+            >
+              Excel
+            </button>
+          </div>
         </div>
       </div>
-      <DetailModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        data={selectedData}
-      />
-      <ConfirmationModal
-        isOpen={isConfirmationModalOpen}
-        onConfirm={handleConfirmAction}
-        onCancel={handleCancelAction}
-        action={confirmationAction || ""}
-      />
     </div>
   );
 };
